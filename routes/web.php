@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [DashboardAdminController::class, 'index'])->name('home')->middleware('auth');
 
 Route::get('/login', [AuthController::class, 'index'])->name('login')->middleware('guest');
+Route::post('/login', [AuthController::class, 'auth'])->name('auth.login')->middleware('guest');
+
+Route::group(['middleware' => 'auth'], function(){
+   Route::get('/', [DashboardAdminController::class, 'index'])->name('home');
+});

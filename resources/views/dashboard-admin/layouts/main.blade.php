@@ -2,7 +2,7 @@
 <html lang="en">
    <head>
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-      <title>Kaiadmin - Bootstrap 5 Admin Dashboard</title>
+      <title>Pengarsipan Digital Universitas Pasundan</title>
       <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport"/>
       <link rel="icon" href="/assets/img/kaiadmin/favicon.ico" type="image/x-icon"/>
 
@@ -35,6 +35,7 @@
       <link rel="stylesheet" href="/assets/css/demo.css" />
    </head>
    <body>
+      @include('sweetalert::alert')
       <div class="wrapper">
          <!-- Sidebar -->
          <div class="sidebar" data-background-color="dark">

@@ -137,23 +137,25 @@
    </style>
 </head>
 <body>
+   @include('sweetalert::alert')
    <div class="login-container">
       <div class="login-image">
          <img src="assets/img/logo.png" alt="Logo">
          <h3>Selamat Datang di Pengarsipan Digital Universitas Pasundan</h3>
       </div>
       <div class="login-form">
-         <form class="form-log">
+         <form class="form-log" method="POST" action="{{ route('auth.login') }}">
+            @csrf
             <div class="text-center mb-4">
                <h1 class="h3 mb-3 fw-normal">Silahkan Login</h1>
             </div>
             <div class="form-floating">
                <label for="floatingInput">Email</label>
-               <input type="email" id="floatingInput" placeholder="Masukan Alamat Email" required>
+               <input type="email" id="floatingInput" name="email" placeholder="Masukan Alamat Email" required>
             </div>
             <div class="form-floating">
                <label for="floatingPassword">Password</label>
-               <input type="password" id="floatingPassword" placeholder="Masukan Password" required>
+               <input type="password" id="floatingPassword" name="password" placeholder="Masukan Password" required>
             </div>
             <button class="btn" type="submit">Masuk</button>
             <p class="mt-3 mb-0 text-center">&copy; 2024 Universitas Pasundan</p>

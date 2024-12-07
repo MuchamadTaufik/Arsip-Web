@@ -140,7 +140,7 @@
    @include('sweetalert::alert')
    <div class="login-container">
       <div class="login-image">
-         <img src="assets/img/logo.png" alt="Logo">
+         <img src="img/logo.png" alt="Logo">
          <h3>Selamat Datang di Pengarsipan Digital Universitas Pasundan</h3>
       </div>
       <div class="login-form">

@@ -1,13 +1,13 @@
 <nav id="sidebar" class="sidebar js-sidebar">
    <div class="sidebar-content js-simplebar">
-      <a class="sidebar-brand" href="index.html">
+      <a class="sidebar-brand" href="{{ route('home') }}">
          <img src="img/logo.png" alt="">
       </a>
 
       <ul class="sidebar-nav">
 
-         <li class="sidebar-item active">
-            <a class="sidebar-link" href="index.html">
+         <li class="sidebar-item">
+            <a class="sidebar-link" href="{{ route('pegawai') }}">
                <span class="align-middle">Pegawai</span>
             </a>
          </li>
@@ -26,5 +26,6 @@
                <span class="align-middle">Logout</span>
             </a>
          </li>
+      </ul>
    </div>
 </nav>

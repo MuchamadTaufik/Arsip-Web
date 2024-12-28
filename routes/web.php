@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\BiodataController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Dashboard\DashboardAdminController;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/login', [AuthController::class, 'index'])->name('login')->middleware('guest');
 Route::post('/login', [AuthController::class, 'auth'])->name('auth.login')->middleware('guest');
 
-Route::group(['middleware' => 'auth'], function(){
+Route::group(['middleware' => ['auth', 'role:admin']], function(){
    Route::get('/', [DashboardAdminController::class, 'index'])->name('home');
+
+   Route::get('/pegawai', [BiodataController::class, 'index'])->name('pegawai');
+   Route::get('/pegawai/create', [BiodataController::class, 'create'])->name('pegawai.create');
 });

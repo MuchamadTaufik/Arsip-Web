@@ -13,23 +13,22 @@
 
 	<link rel="canonical" href="https://demo-basic.adminkit.io/" />
 
-	<title>Pengarsipan Universitas Pasundan</title>
+	<title>Pengarsipan Universitas</title>
 
 	<link href="/css/app.css" rel="stylesheet">
 	<link href="/css/style.css" rel="stylesheet">
+	<link href="/css/pegawai.css" rel="stylesheet">	
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
    @include('sweetalert::alert')
 	<div class="wrapper">
-		{{-- sidebar start --}}
-      @include('layouts.partials.sidebar')
       {{-- sidebar end --}}
 
 		<div class="main">
 			{{-- navbar start --}}
-         @include('layouts.partials.navbar')
+         @include('admin.layouts.partials.navbar')
          {{-- navbar end --}}
 			<main class="content">
 				@yield('container')

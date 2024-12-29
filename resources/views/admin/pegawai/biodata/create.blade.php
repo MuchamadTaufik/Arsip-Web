@@ -28,18 +28,19 @@
                 <div class="form">
                     <form class="row" id="pegawaiForm" method="post" action="{{ route('pegawai.store') }}" enctype="multipart/form-data">
                         @csrf                   
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <div class="search-box" style="width: 300px;">
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3">
+                            <div class="search-box mb-3 mb-md-0" style="width: 100%; max-width: 300px;">
                                 <select class="form-select" id="searchPegawai" name="search_pegawai">
                                     <option value=""></option>
                                 </select>
                             </div>
-                            
-                            <div id="actionButtons">
-                                <a href="{{ route('pegawai') }}" class="btn btn-primary"><strong>Kembali ke Daftar</strong></a>
+                        
+                            <div id="actionButtons" class="d-flex flex-column flex-md-row align-items-center gap-1">
+                                <a href="{{ route('pegawai') }}" class="btn btn-primary mb-2 mb-md-0 me-md-2"><strong>Kembali ke Daftar</strong></a>
                                 <button class="btn btn-primary" type="submit" id="submitBtn"><strong>Simpan</strong></button>
                             </div>
                         </div>
+                        
                         
                         <input type="file" id="hidden_foto" name="foto" style="display: none;">
 
@@ -141,41 +142,31 @@
             </div>
         </div>
     </div>
-
+    
     <script>
-        // Handle foto preview dan transfer ke hidden input
-        document.getElementById("foto").addEventListener("change", function(event) {
-            // Preview foto
+        document.getElementById('foto').addEventListener('change', function(event) {
             const reader = new FileReader();
             reader.onload = function(e) {
-                const photoPreview = document.getElementById("photoPreview");
+                const photoPreview = document.getElementById('photoPreview');
                 photoPreview.src = e.target.result;
-                photoPreview.style.display = "block";
+                photoPreview.style.display = 'block';
             };
-            reader.readAsDataURL(event.target.files[0]);
-    
-            // Transfer file ke hidden input dalam form
-            const hiddenFoto = document.getElementById('hidden_foto');
+            reader.readAsDataURL(this.files[0]);
+
+
+            const hiddenFoto = document.getElementById("hidden_foto");
             const dataTransfer = new DataTransfer();
             dataTransfer.items.add(event.target.files[0]);
             hiddenFoto.files = dataTransfer.files;
         });
-    
-        // Optional: Handle form submit untuk validasi
-        document.getElementById('pegawaiForm').addEventListener('submit', function(e) {
-            const hiddenFoto = document.getElementById('hidden_foto');
-            if (!hiddenFoto.files.length) {
-                e.preventDefault();
-                alert('Silakan pilih foto terlebih dahulu');
-            }
-        });
-    
+
         // Fungsi reset jika diperlukan
         function resetForm() {
-            document.getElementById('pegawaiForm').reset();
-            document.getElementById('photoPreview').style.display = 'none';
-            document.getElementById('foto').value = '';
-            document.getElementById('hidden_foto').value = '';
+            document.getElementById("pegawaiForm").reset();
+            document.getElementById("photoPreview").style.display = "none";
+            document.getElementById("foto").value = "";
+            document.getElementById("hidden_foto").value = "";
         }
-    </script>    
+
+    </script>
 @endsection

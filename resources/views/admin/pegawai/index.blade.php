@@ -56,10 +56,10 @@
                                 <td>{{ $data->pegawai->unit->name ?? 'Belum diisi'}}</td>
                                 <td>
                                     <div class="d-flex justify-content-center align-items-center gap-3">
-                                        <a href="">
+                                        <a href="{{ route('pegawai.edit', $data->id) }}">
                                             <i data-feather="eye" class="text-primary"></i>
                                         </a>
-                                        <form action="" method="post" class="m-0 p-0">
+                                        <form action="{{ route('pegawai.destroy', $data->slug) }}" method="post" class="m-0 p-0">
                                             @csrf
                                             @method('delete')
                                             <button type="submit" onclick="return confirm('Apakah yakin ingin menghapus data?')" style="all: unset; display: flex; align-items: center; justify-content: center; cursor: pointer;">

@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand navbar-light navbar-bg">
     <div class="container-fluid">
         <!-- Logo di kiri -->
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="{{ route('home') }}">
             <img src="/img/logo.png" alt="Logo" style="height: 40px; width: auto;"> <!-- Ganti logo.png dengan path logo Anda -->
         </a>
 

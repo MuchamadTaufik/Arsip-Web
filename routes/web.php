@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\BiodataController;
+use App\Http\Controllers\Admin\PegawaiController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Dashboard\DashboardAdminController;
 use Illuminate\Support\Facades\Route;
@@ -25,4 +26,9 @@ Route::group(['middleware' => ['auth', 'role:admin']], function(){
 
    Route::get('/pegawai', [BiodataController::class, 'index'])->name('pegawai');
    Route::get('/pegawai/create', [BiodataController::class, 'create'])->name('pegawai.create');
+
+   Route::post('/pegawai/store', [BiodataController::class, 'store'])->name('pegawai.store');
+   Route::get('/pegawai/search', [BiodataController::class, 'search'])->name('pegawai.search');
+
+   Route::get('/pegawai/create/kepegawaian', [PegawaiController::class, 'create'])->name('pegawai.create.kepegawaian');
 });

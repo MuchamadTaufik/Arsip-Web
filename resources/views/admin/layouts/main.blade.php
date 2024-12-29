@@ -6,6 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
 	<meta name="author" content="AdminKit">
+	<meta name="csrf-token" content="{{ csrf_token() }}">
 	<meta name="keywords" content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
 
 	<link rel="preconnect" href="https://fonts.gstatic.com">
@@ -19,6 +20,8 @@
 	<link href="/css/style.css" rel="stylesheet">
 	<link href="/css/pegawai.css" rel="stylesheet">	
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -40,6 +43,10 @@
 		</div>
 	</div>
 
+	
+	<!-- Before closing body tag -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 	<script src="/js/app.js"></script>
 
 	<script>
@@ -263,6 +270,187 @@
 			});
 		});
 	</script>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			// Inisialisasi Select2
+			const searchSelect = $('#searchPegawai').select2({
+				placeholder: 'Cari Pegawai...',
+				allowClear: true,
+				minimumInputLength: 2,
+				width: '100%',
+				templateResult: formatResult,
+				templateSelection: formatSelection,
+				ajax: {
+					url: '{{ route("pegawai.search") }}',
+					dataType: 'json',
+					delay: 250,
+					data: function(params) {
+						return {
+							q: params.term,
+							_token: '{{ csrf_token() }}'
+						};
+					},
+					processResults: function(data) {
+						return {
+							results: data.map(item => ({
+								id: item.id,
+								text: `${item.nama_pegawai} (${item.nip})`,
+								foto_url: item.foto_url,
+								data: item
+							}))
+						};
+					},
+					cache: true
+				}
+			});
+
+			// Format hasil pencarian dengan foto
+			function formatResult(state) {
+				if (!state.id) {
+					return state.text;
+				}
+
+				const foto_url = state.foto_url || '/img/logo.png'; // Ganti dengan path default foto
+				
+				const $result = $(
+					`<div class="select2-result-pegawai d-flex align-items-center">
+						<img src="${foto_url}" class="select2-result-pegawai__avatar me-2" 
+							style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;"/>
+						<div class="select2-result-pegawai__info">
+							<div class="select2-result-pegawai__name">${state.text}</div>
+						</div>
+					</div>`
+				);
+				
+				return $result;
+			}
+
+			// Format item terpilih dengan foto
+			function formatSelection(state) {
+				if (!state.id) {
+					return state.text;
+				}
+
+				const foto_url = state.foto_url || '/img/logo.png'; // Ganti dengan path default foto
+				
+				return $(
+					`<div class="d-flex align-items-center">
+						<img src="${foto_url}" class="me-2" 
+							style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover;"/>
+						<span>${state.text}</span>
+					</div>`
+				);
+			}
+
+			// Event handler untuk select
+			searchSelect.on('select2:select', function(e) {
+				handleSelectChange(e.params.data.data);
+				
+				// Update foto preview
+				const photoPreview = document.getElementById("photoPreview");
+				const foto_url = e.params.data.foto_url || '/img/logo.png'; // Ganti dengan path default foto
+				photoPreview.src = foto_url;
+				photoPreview.style.display = "block";
+			});
+
+			// Event handler untuk clear/unselect
+			searchSelect.on('select2:clear', function() {
+				resetForm();
+				const photoPreview = document.getElementById("photoPreview");
+				photoPreview.style.display = "none";
+			});
+
+			// Handler untuk perubahan select
+			function handleSelectChange(data) {
+				populateForm(data);
+				updateButtons(data.id);
+			}
+
+			// Fungsi untuk mengisi form
+			function populateForm(data) {
+				const formFields = [
+					'nip', 'nama_pegawai', 'jenis_kelamin', 'agama',
+					'tempat_lahir', 'tanggal_lahir', 'alamat', 'email', 'no_telp'
+				];
+
+				formFields.forEach(field => {
+					if (data[field]) {
+						$(`#${field}`).val(data[field]);
+					}
+				});
+			}
+
+			// Fungsi untuk update tombol
+			function updateButtons(id) {
+				const buttonContainer = document.getElementById('actionButtons');
+				buttonContainer.innerHTML = `
+					<a href="{{ route('pegawai') }}" class="btn btn-primary"><strong>Kembali ke Daftar</strong></a>
+					<button type="button" class="btn btn-warning" onclick="handleEdit(${id})"><strong>Edit</strong></button>
+					<button type="button" class="btn btn-danger" onclick="handleDelete(${id})"><strong>Hapus</strong></button>
+				`;
+			}
+
+			// Fungsi untuk reset form
+			function resetForm() {
+				// Reset form
+				const form = document.getElementById('pegawaiForm');
+				form.reset();
+				
+				// Reset action dan method
+				form.setAttribute('action', '{{ route("pegawai.store") }}');
+				const methodField = form.querySelector('input[name="_method"]');
+				if (methodField) {
+					methodField.remove();
+				}
+
+				// Reset buttons
+				document.getElementById('actionButtons').innerHTML = `
+					<a href="{{ route('pegawai') }}" class="btn btn-primary"><strong>Kembali ke Daftar</strong></a>
+					<button class="btn btn-primary" type="submit"><strong>Simpan</strong></button>
+				`;
+
+				// Reset select2
+				$('#searchPegawai').val(null).trigger('change');
+			}
+
+			// Attach to window for global access
+			window.handleEdit = function(id) {
+				if (!confirm('Apakah Anda yakin ingin mengubah data ini?')) return;
+				
+				const form = document.getElementById('pegawaiForm');
+				form.setAttribute('action', `/pegawai/${id}`);
+				
+				if (!form.querySelector('input[name="_method"]')) {
+					const methodInput = document.createElement('input');
+					methodInput.setAttribute('type', 'hidden');
+					methodInput.setAttribute('name', '_method');
+					methodInput.setAttribute('value', 'PUT');
+					form.appendChild(methodInput);
+				}
+				
+				form.submit();
+			};
+
+			window.handleDelete = function(id) {
+				if (!confirm('Apakah Anda yakin ingin menghapus data ini?')) return;
+				
+				const form = document.getElementById('pegawaiForm');
+				form.setAttribute('action', `/pegawai/${id}`);
+				
+				if (!form.querySelector('input[name="_method"]')) {
+					const methodInput = document.createElement('input');
+					methodInput.setAttribute('type', 'hidden');
+					methodInput.setAttribute('name', '_method');
+					methodInput.setAttribute('value', 'DELETE');
+					form.appendChild(methodInput);
+				}
+				
+				form.submit();
+			};
+		});
+	</script>
+
 
 </body>
 

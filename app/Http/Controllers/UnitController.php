@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Models\Pegawai;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StorePegawaiRequest;
-use App\Http\Requests\UpdatePegawaiRequest;
+use App\Models\Unit;
+use App\Http\Requests\StoreUnitRequest;
+use App\Http\Requests\UpdateUnitRequest;
 
-class PegawaiController extends Controller
+class UnitController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,13 +21,13 @@ class PegawaiController extends Controller
      */
     public function create()
     {
-        return view('admin.pegawai.kepegawaian.create');
+        //
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePegawaiRequest $request)
+    public function store(StoreUnitRequest $request)
     {
         //
     }
@@ -36,7 +35,7 @@ class PegawaiController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Pegawai $pegawai)
+    public function show(Unit $unit)
     {
         //
     }
@@ -44,7 +43,7 @@ class PegawaiController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Pegawai $pegawai)
+    public function edit(Unit $unit)
     {
         //
     }
@@ -52,7 +51,7 @@ class PegawaiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePegawaiRequest $request, Pegawai $pegawai)
+    public function update(UpdateUnitRequest $request, Unit $unit)
     {
         //
     }
@@ -60,7 +59,7 @@ class PegawaiController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Pegawai $pegawai)
+    public function destroy(Unit $unit)
     {
         //
     }

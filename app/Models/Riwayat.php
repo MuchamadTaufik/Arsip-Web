@@ -13,6 +13,6 @@ class Riwayat extends Model
 
     public function biodata()
     {
-        return $this->hasMany(Biodata::class);
+        return $this->belongsTo(Biodata::class);
     }
 }

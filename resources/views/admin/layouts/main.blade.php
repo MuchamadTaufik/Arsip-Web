@@ -49,8 +49,8 @@
 	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 	<script src="/js/app.js"></script>
 
-	<script>
-		document.addEventListener('DOMContentLoaded', function() {
+	{{-- <script>
+				document.addEventListener('DOMContentLoaded', function() {
 			// Inisialisasi Select2
 			const searchSelect = $('#searchPegawai').select2({
 				placeholder: 'Cari Pegawai...',
@@ -60,140 +60,366 @@
 				templateResult: formatResult,
 				templateSelection: formatSelection,
 				ajax: {
-					url: '{{ route("pegawai.search") }}',
-					dataType: 'json',
-					delay: 250,
-					data: function(params) {
-						return {
-							q: params.term,
-							_token: '{{ csrf_token() }}'
-						};
-					},
-					processResults: function(data) {
-						return {
-							results: data.map(item => ({
-								id: item.id,
-								text: `${item.nama_pegawai} (${item.nip})`,
-								foto_url: item.foto_url,
-								slug: item.slug,
-								data: item
-							}))
-						};
-					},
-					cache: true
+						url: '{{ route("pegawai.search") }}',
+						dataType: 'json',
+						delay: 250,
+						data: function(params) {
+							return {
+								q: params.term,
+								_token: '{{ csrf_token() }}'
+							};
+						},
+						processResults: function(data) {
+							return {
+								results: data.map(item => ({
+										id: item.id,
+										text: `${item.nama_pegawai} (${item.nip})`,
+										foto_url: item.foto_url,
+										data: item // Simpan semua data untuk digunakan nanti
+								}))
+							};
+						},
+						cache: true
 				}
 			});
 
-			// Format hasil pencarian dengan foto
+			// Format tampilan hasil pencarian
 			function formatResult(state) {
-				if (!state.id) {
-					return state.text;
-				}
-
-				const foto_url = state.foto_url || '/img/logo.png'; // Ganti dengan path default foto
+				if (!state.id) return state.text;
 				
-				const $result = $(
-					`<div class="select2-result-pegawai d-flex align-items-center">
-						<img src="${foto_url}" class="select2-result-pegawai__avatar me-2" 
-							style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;"/>
-						<div class="select2-result-pegawai__info">
-							<div class="select2-result-pegawai__name">${state.text}</div>
-						</div>
-					</div>`
-				);
-				
-				return $result;
-			}
-
-			// Format item terpilih dengan foto
-			function formatSelection(state) {
-				if (!state.id) {
-					return state.text;
-				}
-
-				const foto_url = state.foto_url || '/img/logo.png'; // Ganti dengan path default foto
-				
+				const foto_url = state.foto_url || '/img/logo.png';
 				return $(
-					`<div class="d-flex align-items-center">
-						<img src="${foto_url}" class="me-2" 
-							style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover;"/>
-						<span>${state.text}</span>
-					</div>`
+						`<div class="select2-result-pegawai d-flex align-items-center">
+							<img src="${foto_url}" class="select2-result-pegawai__avatar me-2" 
+								style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;"/>
+							<div class="select2-result-pegawai__info">
+								<div class="select2-result-pegawai__name">${state.text}</div>
+							</div>
+						</div>`
 				);
 			}
 
-			// Event handler untuk select
-			searchSelect.on('select2:select', function(e) {
-				handleSelectChange(e.params.data.data);
-				
-				// Update foto preview
-				const photoPreview = document.getElementById("photoPreview");
-				const foto_url = e.params.data.foto_url || '/img/logo.png'; // Ganti dengan path default foto
-				photoPreview.src = foto_url;
-				photoPreview.style.display = "block";
-			});
-
-			// Event handler untuk clear/unselect
-			searchSelect.on('select2:clear', function() {
-				resetForm();
-				const photoPreview = document.getElementById("photoPreview");
-				photoPreview.style.display = "none";
-			});
-
-			// Handler untuk perubahan select
-			function handleSelectChange(data) {
-				populateForm(data);
-				updateButtons(data.id, data.slug);
+			// Format tampilan item terpilih
+			function formatSelection(state) {
+				if (!state.id) return state.text;
+				return state.text;
 			}
 
-			// Fungsi untuk mengisi form
-			function populateForm(data) {
-				const formFields = [
-					'nip', 'nama_pegawai', 'jenis_kelamin', 'agama',
-					'tempat_lahir', 'tanggal_lahir', 'alamat', 'email', 'no_telp'
-				];
+			// Event handler saat item dipilih
+			searchSelect.on('select2:select', function(e) {
+				const selectedData = e.params.data.data;
+				console.log('Selected Data:', selectedData); // Debug
 
-				formFields.forEach(field => {
-					if (data[field]) {
-						$(`#${field}`).val(data[field]);
+				// Isi form biodata
+				fillBiodataForm(selectedData);
+				
+				// Isi form kepegawaian
+				if (selectedData.pegawai) {
+						fillKepegawaianForm(selectedData.pegawai);
+				}
+
+				// Tampilkan riwayat
+				if (selectedData.riwayat && selectedData.riwayat.length > 0) {
+						displayRiwayat(selectedData.riwayat);
+				}
+
+				// Update foto
+				if (selectedData.foto_url) {
+						$('#photoPreview').attr('src', selectedData.foto_url).show();
+				}
+			});
+
+			// Handler untuk mengisi form biodata
+			function fillBiodataForm(data) {
+				$('#nip').val(data.nip);
+				$('#nama_pegawai').val(data.nama_pegawai);
+				$('#jenis_kelamin').val(data.jenis_kelamin);
+				$('#agama').val(data.agama);
+				$('#tempat_lahir').val(data.tempat_lahir);
+				$('#tanggal_lahir').val(data.tanggal_lahir);
+				$('#alamat').val(data.alamat);
+				$('#email').val(data.email);
+				$('#no_telp').val(data.no_telp);
+			}
+
+			// Handler untuk mengisi form kepegawaian
+			function fillKepegawaianForm(pegawaiData) {
+				$('select[name="unit_id"]').val(pegawaiData.unit_id);
+				$('#status').val(pegawaiData.status);
+				$('#hubungan_kerja').val(pegawaiData.hubungan_kerja);
+				$('#jabatan').val(pegawaiData.jabatan);
+			}
+
+			// Handler untuk menampilkan riwayat
+			function displayRiwayat(riwayatData) {
+				const container = $('#riwayatContainer');
+				container.empty(); // Bersihkan container terlebih dahulu
+
+				riwayatData.forEach((item, index) => {
+						const riwayatHtml = `
+							<div class="riwayat-item card mb-3">
+								<div class="card-body">
+										<div class="d-flex justify-content-between align-items-center mb-3">
+											<h6 class="card-subtitle">Riwayat #${index + 1}</h6>
+										</div>
+										<div class="row g-3">
+											<div class="col-md-12">
+												<input type="text" class="form-control" value="${item.nama_instansi}" readonly>
+											</div>
+											<div class="col-md-12">
+												<input type="text" class="form-control" value="${item.jabatan}" readonly>
+											</div>
+											<div class="col-md-12">
+												<input type="text" class="form-control" value="${item.tahun}" readonly>
+											</div>
+											${item.file_pendukung ? `
+											<div class="col-md-12">
+												<a href="${item.file_pendukung}" target="_blank" class="btn btn-sm btn-info">
+														<i data-feather="file"></i> Lihat File
+												</a>
+											</div>
+											` : ''}
+										</div>
+								</div>
+							</div>
+						`;
+						container.append(riwayatHtml);
+				});
+
+				// Re-initialize Feather icons
+				feather.replace();
+			}
+
+			// Event handler untuk clear/reset
+			searchSelect.on('select2:clear', function() {
+				$('#pegawaiForm')[0].reset();
+				$('#photoPreview').hide();
+				$('#riwayatContainer').empty();
+			});
+		});
+	</script> --}}
+
+	<script>
+			document.addEventListener('DOMContentLoaded', function() {
+				// Inisialisasi Select2
+				const searchSelect = $('#searchPegawai').select2({
+					placeholder: 'Cari Pegawai...',
+					allowClear: true,
+					minimumInputLength: 2,
+					width: '100%',
+					templateResult: formatResult,
+					templateSelection: formatSelection,
+					ajax: {
+							url: '{{ route("pegawai.search") }}',
+							dataType: 'json',
+							delay: 250,
+							data: function(params) {
+								return {
+									q: params.term,
+									_token: '{{ csrf_token() }}'
+								};
+							},
+							processResults: function(data) {
+								return {
+									results: data.map(item => ({
+											id: item.id,
+											text: `${item.nama_pegawai} (${item.nip})`,
+											foto_url: item.foto_url,
+											data: item // Simpan semua data untuk digunakan nanti
+									}))
+								};
+							},
+							cache: true
 					}
 				});
-			}
+			
+				// Format tampilan hasil pencarian
+				function formatResult(state) {
+					if (!state.id) return state.text;
+					
+					const foto_url = state.foto_url || '/img/logo.png';
+					return $(
+							`<div class="select2-result-pegawai d-flex align-items-center">
+								<img src="${foto_url}" class="select2-result-pegawai__avatar me-2" 
+									style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;"/>
+								<div class="select2-result-pegawai__info">
+									<div class="select2-result-pegawai__name">${state.text}</div>
+								</div>
+							</div>`
+					);
+				}
+			
+				// Format tampilan item terpilih
+				function formatSelection(state) {
+					if (!state.id) return state.text;
+					return state.text;
+				}
+			
+				// Event handler saat item dipilih
+				searchSelect.on('select2:select', function(e) {
+					const selectedData = e.params.data.data;
+					console.log('Selected Data:', selectedData); // Debug
+			
+					// Isi form biodata
+					fillBiodataForm(selectedData);
+					
+					// Isi form kepegawaian
+					if (selectedData.pegawai) {
+							fillKepegawaianForm(selectedData.pegawai);
+					}
+			
+					// Tampilkan riwayat
+					if (selectedData.riwayat && selectedData.riwayat.length > 0) {
+							displayRiwayat(selectedData.riwayat);
+					}
+			
+					// Update foto
+					if (selectedData.foto_url) {
+							$('#photoPreview').attr('src', selectedData.foto_url).show();
+					}
+			
+					// Update tombol
+					updateButtons(selectedData.id);
+			
+					// Set form to read-only
+					setFormReadonly(true);
+				});
+			
+				// Handler untuk mengisi form biodata
+				function fillBiodataForm(data) {
+					$('#nip').val(data.nip);
+					$('#nama_pegawai').val(data.nama_pegawai);
+					$('#jenis_kelamin').val(data.jenis_kelamin);
+					$('#agama').val(data.agama);
+					$('#tempat_lahir').val(data.tempat_lahir);
+					$('#tanggal_lahir').val(data.tanggal_lahir);
+					$('#alamat').val(data.alamat);
+					$('#email').val(data.email);
+					$('#no_telp').val(data.no_telp);
+				}
+			
+				// Handler untuk mengisi form kepegawaian
+				function fillKepegawaianForm(pegawaiData) {
+					$('select[name="unit_id"]').val(pegawaiData.unit_id);
+					$('#status').val(pegawaiData.status);
+					$('#hubungan_kerja').val(pegawaiData.hubungan_kerja);
+					$('#jabatan').val(pegawaiData.jabatan);
+				}
+			
+				// Handler untuk menampilkan riwayat
+				function displayRiwayat(riwayatData) {
+					const container = $('#riwayatContainer');
+					container.empty(); // Bersihkan container terlebih dahulu
+			
+					riwayatData.forEach((item, index) => {
+							const riwayatHtml = `
+								<div class="riwayat-item card mb-3">
+									<div class="card-body">
+											<div class="d-flex justify-content-between align-items-center mb-3">
+												<h6 class="card-subtitle">Riwayat #${index + 1}</h6>
+											</div>
+											<div class="row g-3">
+												<div class="col-md-12">
+													<input type="text" class="form-control" value="${item.nama_instansi}" readonly>
+												</div>
+												<div class="col-md-12">
+													<input type="text" class="form-control" value="${item.jabatan}" readonly>
+												</div>
+												<div class="col-md-12">
+													<input type="text" class="form-control" value="${item.tahun}" readonly>
+												</div>
+												${item.file_pendukung ? `
+												<div class="col-md-12">
+													<a href="${item.file_pendukung}" target="_blank" class="btn btn-sm btn-info">
+															<i data-feather="file"></i> Lihat File
+													</a>
+												</div>
+												` : ''}
+											</div>
+									</div>
+								</div>
+							`;
+							container.append(riwayatHtml);
+					});
+			
+					// Re-initialize Feather icons
+					feather.replace();
+				}
+			
+				// Update tombol setelah pencarian
+				function updateButtons(id) {
+					const buttonContainer = $('#actionButtons');
+					buttonContainer.empty();
+			
+					const buttons = `
+							<a href="{{ route('pegawai') }}" class="btn btn-secondary" id="kembaliDaftarBtn">
+                        <i data-feather="arrow-left"></i> Kembali ke Daftar
+                     </a>
+							<a href="/pegawai/${id}/edit" class="btn btn-warning" id="editBtn">
+								<i data-feather="edit"></i> Edit
+							</a>
+							<form action="/pegawai/delete/${id}" method="POST" id="hapusForm" style="display:inline;">
+									@csrf
+									@method('DELETE')
+									<button type="submit" class="btn btn-danger" id="hapusBtn">
+										<i data-feather="trash-2"></i> Hapus
+									</button>
+							</form>
+					`;
+					buttonContainer.append(buttons);
+					feather.replace();
+				}
+			
+				// Set form fields to readonly
+				function setFormReadonly(isReadonly) {
+					// Atur semua elemen input dan select di dalam #pegawaiForm menjadi readonly atau disabled
+					$('#pegawaiForm input').prop('readonly', isReadonly);
+					$('#pegawaiForm select').not('#searchPegawai').prop('readonly', isReadonly); // Mengatur select kecuali #searchPegawai
+					$('#pegawaiForm select').not('#searchPegawai').prop('disabled', isReadonly); // Menonaktifkan select kecuali #searchPegawai
+					
+					// Nonaktifkan input file jika isReadonly true
+					$('#pegawaiForm input[type="file"]').prop('disabled', isReadonly); // Menonaktifkan input file
 
-			function updateButtons(id, slug) {
-				const buttonContainer = document.getElementById('actionButtons');
-				buttonContainer.innerHTML = `
-					<div class="gap-3">
-							<a href="{{ route('pegawai') }}" class="btn btn-primary"><strong>Kembali ke Daftar</strong></a>
-							<a href="/pegawai/${id}/edit" class="btn btn-warning"><strong>Edit</strong></a>
-					</div>
-				`;
-			}
-
-			// Fungsi untuk reset form
-			function resetForm() {
-				// Reset form
-				const form = document.getElementById('pegawaiForm');
-				form.reset();
-				
-				// Reset action dan method
-				form.setAttribute('action', '{{ route("pegawai.store") }}');
-				const methodField = form.querySelector('input[name="_method"]');
-				if (methodField) {
-					methodField.remove();
+					// Sembunyikan tombol "Tambah Riwayat" jika isReadonly true
+					$('#addRiwayat').toggle(!isReadonly); // Menyembunyikan tombol saat readonly aktif
 				}
 
-				// Reset buttons
-				document.getElementById('actionButtons').innerHTML = `
-					<a href="{{ route('pegawai') }}" class="btn btn-primary"><strong>Kembali ke Daftar</strong></a>
-					<button class="btn btn-primary" type="submit"><strong>Simpan</strong></button>
-				`;
 
-				// Reset select2
-				$('#searchPegawai').val(null).trigger('change');
-			}
-		});
-	</script> 
+			
+				// Event handler untuk clear/reset
+				searchSelect.on('select2:clear', function() {
+					$('#pegawaiForm')[0].reset();
+					$('#photoPreview').hide();
+					$('#riwayatContainer').empty();
+					resetButtons(); // Reset buttons to initial state
+				});
+			
+				// Reset tombol ke state awal
+				function resetButtons() {
+					const buttonContainer = $('#actionButtons');
+					buttonContainer.empty();
+			
+					const button = `
+							<a href="{{ route('pegawai') }}" class="btn btn-secondary">
+                        <i data-feather="arrow-left"></i> Kembali ke Daftar
+                     </a>
+							<button type="submit" class="btn btn-primary">
+                        <i data-feather="save"></i> Simpan
+                     </button>
+					`;
+
+					buttonContainer.append(button);
+
+					feather.replace();
+			
+					// Tambahkan event listener untuk tombol search
+					$('#searchBtn').on('click', function() {
+							// Logic for Search button
+					});
+				}
+			});
+	</script>
+		
 
 </body>
 

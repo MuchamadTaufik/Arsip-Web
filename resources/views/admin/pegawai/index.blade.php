@@ -20,8 +20,8 @@
                         <label for="status">Status</label>
                         <select class="form-control" id="status">
                             <option value="">Semua Status</option>
-                            <option value="aktif">Aktif</option>
-                            <option value="enum">Tidak Aktif</option>
+                            <option value="Aktif">Aktif</option>
+                            <option value="Non-Aktif">Tidak Aktif</option>
                         </select>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
                                         <a href="{{ route('pegawai.edit', $data->id) }}">
                                             <i data-feather="eye" class="text-primary"></i>
                                         </a>
-                                        <form action="{{ route('pegawai.destroy', $data->slug) }}" method="post" class="m-0 p-0">
+                                        <form action="{{ route('pegawai.destroy', $data->id) }}" method="post" class="m-0 p-0">
                                             @csrf
                                             @method('delete')
                                             <button type="submit" onclick="return confirm('Apakah yakin ingin menghapus data?')" style="all: unset; display: flex; align-items: center; justify-content: center; cursor: pointer;">

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Unit;
+use App\Models\Biodata;
 use App\Models\Pegawai;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePegawaiRequest;
@@ -22,7 +24,22 @@ class PegawaiController extends Controller
      */
     public function create()
     {
-        return view('admin.pegawai.kepegawaian.create');
+        // Cek apakah ada biodata_id di session
+        if (!session()->has('biodata_id')) {
+            return redirect()->route('pegawai.create')
+                ->with('error', 'Silakan isi biodata terlebih dahulu');
+        }
+        
+        // Ambil data unit untuk dropdown
+        $unit = Unit::all();
+        
+        // Ambil data biodata untuk foto preview
+        $biodata = Biodata::find(session('biodata_id'));
+        
+        return view('admin.pegawai.kepegawaian.create', [
+            'unit' => $unit,
+            'biodata' => $biodata
+        ]);
     }
 
     /**
@@ -30,7 +47,22 @@ class PegawaiController extends Controller
      */
     public function store(StorePegawaiRequest $request)
     {
-        //
+        $validatedData = $request->validate([
+            'unit_id' => 'required',
+            'status' => 'required',
+            'hubungan_kerja' => 'required',
+            'jabatan' => 'required'
+        ]);
+
+        // Buat data kepegawaian baru
+        $pegawai = Pegawai::create($validatedData);
+
+        // Update biodata dengan pegawai_id
+        Biodata::where('id', session('biodata_id'))
+            ->update(['pegawai_id' => $pegawai->id]);
+
+        return redirect()->route('pegawai')
+            ->with('success', 'Data kepegawaian berhasil disimpan');
     }
 
     /**

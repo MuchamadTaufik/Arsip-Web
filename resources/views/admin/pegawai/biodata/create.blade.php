@@ -17,8 +17,14 @@
                 </div>
                 <div class="card card-filter w-100">
                     <div class="list-group">
-                        <a href="{{ route('pegawai.create') }}" class="btn btn-primary mb-2 {{ Route::is('pegawai.create*') ? 'active' : '' }}">Biodata</a>
-                        <a href="{{ route('pegawai.create.kepegawaian') }}" class="btn btn-primary mb-2">Kepegawaian</a>
+                        <a href="{{ route('pegawai.create') }}" 
+                            class="btn btn-primary mb-2 {{ Route::is('pegawai.create') ? 'active' : '' }}">
+                            Biodata
+                        </a>
+                        <a href="{{ session()->has('biodata_id') ? route('pegawai.create.kepegawaian') : '#' }}" 
+                            class="btn btn-primary mb-2 {{ !session()->has('biodata_id') ? 'disabled' : '' }}">
+                            Kepegawaian
+                        </a>
                         <a href="#" class="btn btn-primary mb-2">Riwayat</a>
                     </div>
                 </div>

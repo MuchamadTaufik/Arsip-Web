@@ -15,8 +15,6 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('pegawai_id')->nullable();
             $table->foreign('pegawai_id')->references('id')->on('pegawais')->onDelete('cascade');
-            $table->unsignedBigInteger('riwayat_id')->nullable();
-            $table->foreign('riwayat_id')->references('id')->on('riwayats')->onDelete('cascade');
             $table->string('foto')->nullable();
             $table->string('nip')->unique();
             $table->string('nama_pegawai');

@@ -28,6 +28,6 @@ class Biodata extends Model
 
     public function riwayat()
     {
-        return $this->belongsTo(Riwayat::class);
+        return $this->hasMany(Riwayat::class);
     }
 }

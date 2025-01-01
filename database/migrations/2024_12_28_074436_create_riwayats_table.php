@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('riwayats', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('biodata_id')->nullable();
+            $table->foreign('biodata_id')->references('id')->on('biodatas')->onDelete('cascade');
             $table->string('jabatan');
             $table->string('nama_instansi');
             $table->year('tahun');

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('unit_id')->nullable();
             $table->foreign('unit_id')->references('id')->on('units')->onDelete('cascade');
-            $table->enum('status', ['aktif','enum']);
+            $table->enum('status', ['Aktif','Non-Aktif']);
             $table->string('hubungan_kerja');
             $table->string('jabatan');
             $table->timestamps();

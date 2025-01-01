@@ -28,11 +28,19 @@ Route::group(['middleware' => ['auth', 'role:admin']], function(){
    Route::get('/pegawai/create', [BiodataController::class, 'create'])->name('pegawai.create');
 
    Route::post('/pegawai/store', [BiodataController::class, 'store'])->name('pegawai.store');
+
+
+   
    Route::get('/pegawai/{id}/edit', [BiodataController::class, 'edit'])->name('pegawai.edit');
    Route::delete('/pegawai/delete/{slug}', [BiodataController::class, 'destroy'])->name('pegawai.destroy');
+
+
+   
    Route::put('/pegawai/update/{slug}', [BiodataController::class, 'update'])->name('pegawai.update');
    
    Route::get('/pegawai/search', [BiodataController::class, 'search'])->name('pegawai.search');
 
    Route::get('/pegawai/create/kepegawaian', [PegawaiController::class, 'create'])->name('pegawai.create.kepegawaian');
+   Route::post('/pegawai/create/kepegawaian/store', [PegawaiController::class, 'store'])->name('pegawai.create.kepegawaian.store');
+
 });

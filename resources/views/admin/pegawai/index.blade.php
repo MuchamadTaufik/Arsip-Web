@@ -4,7 +4,6 @@
     <div class="container">
         <div class="row">
             <div class="col-md-3">
-                <h3 class="mb-3 text-center">Daftar Pegawai</h3>
                 <div class="card card-filter w-100 p-3">
                     <h4 class="text-center">Filter Data</h4>
                     <div class="form-group mb-3">

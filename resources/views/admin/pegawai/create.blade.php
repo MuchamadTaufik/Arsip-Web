@@ -7,11 +7,12 @@
          <div class="row">
             <div class="col-md-12">
                <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3">
-                  <div class="search-box mb-3 mb-md-0" style="width: 100%; max-width: 300px;">
+                  <div class="search-box mb-3 mb-md-0">
                      <select class="form-select" id="searchPegawai" name="search_pegawai">
                         <option value=""></option>
                      </select>
                   </div>
+                  
             
                   <div id="actionButtons" class="d-flex flex-column flex-md-row align-items-center gap-1">
                      <a href="{{ route('pegawai') }}" class="btn btn-secondary">
@@ -214,12 +215,31 @@
 
                               <!-- Riwayat Tab -->
                               <div class="tab-pane fade" id="riwayat">
-                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                       <button type="button" class="btn btn-primary btn-sm" id="addRiwayat">
-                                          <i data-feather="plus"></i> Tambah Riwayat
-                                       </button>
+                                    <div class="flex-fill table-responsive">
+                                       <table class="table table-hover my-0" id="riwayatTable">
+                                          <div class="d-flex justify-content-between align-items-center mb-3" style="padding: 10px">
+                                             <button type="button" class="btn btn-primary ms-auto" id="addRiwayat">
+                                                <i data-feather="plus"></i> Tambah
+                                             </button>
+                                          </div>
+                                          <thead>
+                                             <tr>
+                                                   <th>No</th>
+                                                   <th>Nama Instansi</th>
+                                                   <th>Jabatan</th>
+                                                   <th>Tahun</th>
+                                                   <th>File Pendukung</th>
+                                                   <th>Aksi</th>
+                                             </tr>
+                                          </thead>
+                                          <tbody>
+                                             {{-- @foreach ($biodata as $data) --}}
+                                             <tr>
+                                             </tr>
+                                             {{-- @endforeach --}}
+                                          </tbody>
+                                       </table>
                                  </div>
-                                 
                                  <div id="riwayatContainer">
                                        <!-- Riwayat items will be added here -->
                                  </div>
@@ -234,7 +254,7 @@
 
    <!-- Riwayat Template -->
    <template id="riwayatTemplate">
-         <div class="riwayat-item card mb-3">
+         <div class="riwayat-item mb-3">
             <div class="card-body">
                <div class="d-flex justify-content-between align-items-center mb-3">
                      <h6 class="card-subtitle">Riwayat #<span class="riwayat-number"></span></h6>
@@ -307,8 +327,14 @@
       const riwayatTemplate = document.getElementById('riwayatTemplate');
 
       document.getElementById('addRiwayat').addEventListener('click', function() {
-         const newRiwayat = document.importNode(riwayatTemplate.content, true);
+         var table = document.getElementById('riwayatTable');
          riwayatCount++;
+         if (riwayatCount !== 0) {
+            table.style.display = 'none';
+         }
+         
+         const newRiwayat = document.importNode(riwayatTemplate.content, true);
+         // riwayatCount++;
          
          // Update nomor dan index
          newRiwayat.querySelector('.riwayat-number').textContent = riwayatCount;
@@ -319,6 +345,11 @@
          // Event handler untuk remove button
          newRiwayat.querySelector('.remove-riwayat').addEventListener('click', function() {
             this.closest('.riwayat-item').remove();
+            riwayatCount--;
+            const table = document.getElementById('riwayatTable');
+            if (riwayatCount === 0) {
+               table.style.display = 'table'; // Hide the table when there are no items
+            }
          });
          
          riwayatContainer.appendChild(newRiwayat);

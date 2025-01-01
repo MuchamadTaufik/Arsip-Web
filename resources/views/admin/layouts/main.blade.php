@@ -308,40 +308,35 @@
 			
 				// Handler untuk menampilkan riwayat
 				function displayRiwayat(riwayatData) {
-					const container = $('#riwayatContainer');
-					container.empty(); // Bersihkan container terlebih dahulu
-			
+					const tbody = $('#riwayatTable tbody');
+					tbody.empty(); // Clear the table body first
+
 					riwayatData.forEach((item, index) => {
-							const riwayatHtml = `
-								<div class="riwayat-item card mb-3">
-									<div class="card-body">
-											<div class="d-flex justify-content-between align-items-center mb-3">
-												<h6 class="card-subtitle">Riwayat #${index + 1}</h6>
-											</div>
-											<div class="row g-3">
-												<div class="col-md-12">
-													<input type="text" class="form-control" value="${item.nama_instansi}" readonly>
-												</div>
-												<div class="col-md-12">
-													<input type="text" class="form-control" value="${item.jabatan}" readonly>
-												</div>
-												<div class="col-md-12">
-													<input type="text" class="form-control" value="${item.tahun}" readonly>
-												</div>
-												${item.file_pendukung ? `
-												<div class="col-md-12">
-													<a href="${item.file_pendukung}" target="_blank" class="btn btn-sm btn-info">
-															<i data-feather="file"></i> Lihat File
-													</a>
-												</div>
-												` : ''}
-											</div>
-									</div>
-								</div>
-							`;
-							container.append(riwayatHtml);
+						const filePendukungHtml = item.file_pendukung ? 
+								`<a href="${item.file_pendukung}" target="_blank" class="btn btn-sm btn-info">
+									<i data-feather="file"></i> Lihat File
+								</a>` 
+								: 'N/A';
+						
+						const riwayatHtml = `
+								<tr class="riwayat-item">
+									<td>${index + 1}</td>
+									<td>${item.nama_instansi}</td>
+									<td>${item.jabatan}</td>
+									<td>${item.tahun}</td>
+									<td>${filePendukungHtml}</td>
+									<td>
+										<div class="justify-content-center align-items-center gap-3">
+												<button type="button" class="btn btn-danger remove-riwayat">
+													<i data-feather="trash-2" style="width:20px;height:20px;"></i>
+												</button>
+										</div>
+									</td>
+								</tr>
+						`;
+						tbody.append(riwayatHtml);
 					});
-			
+
 					// Re-initialize Feather icons
 					feather.replace();
 				}
@@ -391,6 +386,9 @@
 					$('#pegawaiForm')[0].reset();
 					$('#photoPreview').hide();
 					$('#riwayatContainer').empty();
+
+					const tbody = $('#riwayatTable tbody');
+					tbody.empty(); // Clear any previous rows in the table
 					resetButtons(); // Reset buttons to initial state
 				});
 			

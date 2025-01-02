@@ -203,9 +203,12 @@ class BiodataController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Biodata $biodata)
+    public function show($slug)
     {
-        //
+        $biodata = Biodata::with(['pegawai.unit', 'riwayat'])
+            ->where('slug', $slug)
+            ->firstOrFail();
+        return view('admin.pegawai.show', compact('biodata'));
     }
 
     /**

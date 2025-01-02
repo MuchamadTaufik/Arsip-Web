@@ -55,7 +55,7 @@
                                 <td>{{ $data->pegawai->unit->name ?? 'Belum diisi'}}</td>
                                 <td>
                                     <div class="d-flex justify-content-center align-items-center gap-3">
-                                        <a href="{{ route('pegawai.edit', $data->id) }}">
+                                        <a href="{{ route('pegawai.show', $data->slug) }}">
                                             <i data-feather="eye" class="text-primary"></i>
                                         </a>
                                         <form action="{{ route('pegawai.destroy', $data->id) }}" method="post" class="m-0 p-0">

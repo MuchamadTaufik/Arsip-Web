@@ -301,12 +301,12 @@ class BiodataController extends Controller
     
             // Menampilkan pesan sukses
             alert()->success('Success', 'Biodata beserta data terkait berhasil dihapus');
-            return redirect()->route('pegawai')->with('success', 'Data berhasil dihapus');
+            return redirect()->route('pegawai')->withInput();
             
         } catch (\Exception $e) {
             // Menangani kesalahan jika terjadi
             alert()->error('Error', 'Gagal menghapus biodata dan data terkait');
-            return redirect()->route('pegawai')->with('error', 'Gagal menghapus data');
+            return redirect()->route('pegawai')->withInput();
         }
     }
     

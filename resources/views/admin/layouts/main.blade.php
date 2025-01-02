@@ -327,9 +327,13 @@
 									<td>${filePendukungHtml}</td>
 									<td>
 										<div class="justify-content-center align-items-center gap-3">
-												<button type="button" class="btn btn-danger remove-riwayat">
+											<form action="/pegawai/riwayat/delete/${item.id}" method="POST" style="display:inline;">
+												@csrf
+												@method('DELETE')
+												<button type="submit" class="btn btn-danger remove-riwayat" onclick="return confirm('Apakah yakin ingin menghapus data?')">
 													<i data-feather="trash-2" style="width:20px;height:20px;"></i>
 												</button>
+											</form>
 										</div>
 									</td>
 								</tr>
@@ -348,15 +352,15 @@
 			
 					const buttons = `
 							<a href="{{ route('pegawai') }}" class="btn btn-secondary" id="kembaliDaftarBtn">
-                        <i data-feather="arrow-left"></i> Kembali ke Daftar
-                     </a>
+								<i data-feather="arrow-left"></i> Kembali ke Daftar
+							</a>
 							<a href="/pegawai/${id}/edit" class="btn btn-warning" id="editBtn">
 								<i data-feather="edit"></i> Edit
 							</a>
 							<form action="/pegawai/delete/${id}" method="POST" id="hapusForm" style="display:inline;">
 									@csrf
 									@method('DELETE')
-									<button type="submit" class="btn btn-danger" id="hapusBtn">
+									<button type="submit" class="btn btn-danger" id="hapusBtn" onclick="return confirm('Apakah yakin ingin menghapus data?')">
 										<i data-feather="trash-2"></i> Hapus
 									</button>
 							</form>

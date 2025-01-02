@@ -172,7 +172,7 @@
                               <div class="tab-pane fade" id="kepegawaian">
                                  <div class="row g-3">
                                        <div class="col-md-12">
-                                          <select class="form-select @error('unit_id') is-invalid @enderror" 
+                                          <select class="form-control @error('unit_id') is-invalid @enderror" 
                                                    name="unit_id" required>
                                              <option value="">Pilih Unit</option>
                                              @foreach($units as $unit)

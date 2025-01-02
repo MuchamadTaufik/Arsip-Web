@@ -35,10 +35,6 @@ form {
     border-radius: 4px;
 }
 
-form {
-    background-color: white;
-}
-
 .search-box {
     position: relative;
     width: 300px;

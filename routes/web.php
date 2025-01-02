@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\BiodataController;
-use App\Http\Controllers\Admin\PegawaiController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Dashboard\DashboardAdminController;
+use App\Http\Controllers\Admin\RiwayatController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,23 +24,19 @@ Route::post('/login', [AuthController::class, 'auth'])->name('auth.login')->midd
 Route::group(['middleware' => ['auth', 'role:admin']], function(){
    Route::get('/', [DashboardAdminController::class, 'index'])->name('home');
 
+   // Biodata
    Route::get('/pegawai', [BiodataController::class, 'index'])->name('pegawai');
    Route::get('/pegawai/create', [BiodataController::class, 'create'])->name('pegawai.create');
-
    Route::post('/pegawai/store', [BiodataController::class, 'store'])->name('pegawai.store');
+   Route::delete('/pegawai/delete/{slug}', [BiodataController::class, 'destroy'])->name('pegawai.destroy');
+   Route::get('/pegawai/search', [BiodataController::class, 'search'])->name('pegawai.search');
 
+   // Edit Riwayat
+   Route::delete('/pegawai/riwayat/delete/{id}', [RiwayatController::class, 'destroy'])->name('pegawai.riwayat.destroy');
 
    
    Route::get('/pegawai/{id}/edit', [BiodataController::class, 'edit'])->name('pegawai.edit');
-   Route::delete('/pegawai/delete/{slug}', [BiodataController::class, 'destroy'])->name('pegawai.destroy');
 
-
-   
    Route::put('/pegawai/update/{slug}', [BiodataController::class, 'update'])->name('pegawai.update');
    
-   Route::get('/pegawai/search', [BiodataController::class, 'search'])->name('pegawai.search');
-
-   Route::get('/pegawai/create/kepegawaian', [PegawaiController::class, 'create'])->name('pegawai.create.kepegawaian');
-   Route::post('/pegawai/create/kepegawaian/store', [PegawaiController::class, 'store'])->name('pegawai.create.kepegawaian.store');
-
 });

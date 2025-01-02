@@ -216,59 +216,206 @@ class BiodataController extends Controller
      */
     public function edit($id)
     {
-        $biodata = Biodata::where('id', $id)->firstOrFail();
+        $biodata = Biodata::with(['pegawai.unit', 'riwayat'])
+            ->where('id', $id)
+            ->firstOrFail();
 
-        return view('admin.pegawai.biodata.edit', compact('biodata'));
+        $units = Unit::all();
+        return view('admin.pegawai.edit', compact('biodata','units'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateBiodataRequest $request, $slug)
+    // public function update(UpdateBiodataRequest $request, $id)
+    // {
+    //     DB::beginTransaction();
+    //     try {
+    //         $biodata = Biodata::findOrFail($id);
+
+    //         // Validasi data biodata
+    //         $validatedBiodata = $request->validate([
+    //             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    //             'nip' => 'required|max:255|unique:biodatas,nip,' . $id,
+    //             'nama_pegawai' => 'required|max:255',
+    //             'jenis_kelamin' => 'required|in:Laki-Laki,Perempuan',
+    //             'agama' => 'required|in:Islam,Kristen Protestan,Katolik,Hindu,Buddha,Konghucu',
+    //             'tempat_lahir' => 'required|max:255',
+    //             'tanggal_lahir' => 'required|date_format:Y-m-d',
+    //             'alamat' => 'required|max:255',
+    //             'email' => 'required|email|unique:biodatas,email,' . $id,
+    //             'no_telp' => 'required|numeric',
+
+    //             // Data kepegawaian
+    //             'unit_id' => 'required|exists:units,id',
+    //             'status' => 'required|in:Aktif,Non-Aktif',
+    //             'hubungan_kerja' => 'required|string|max:255',
+    //             'jabatan' => 'required|string|max:255',
+    //         ], [
+    //             'nip.required' => 'NIP wajib diisi',
+    //             'nip.unique' => 'NIP sudah digunakan',
+    //             'nama_pegawai.required' => 'Nama pegawai wajib diisi',
+    //             'jenis_kelamin.required' => 'Jenis kelamin wajib dipilih',
+    //             'agama.required' => 'Agama wajib dipilih',
+    //             'tempat_lahir.required' => 'Tempat lahir wajib diisi',
+    //             'tanggal_lahir.required' => 'Tanggal lahir wajib diisi',
+    //             'alamat.required' => 'Alamat wajib diisi',
+    //             'email.required' => 'Email wajib diisi',
+    //             'email.email' => 'Format email tidak valid',
+    //             'email.unique' => 'Email sudah digunakan',
+    //             'no_telp.required' => 'Nomor telepon wajib diisi',
+    //             'no_telp.numeric' => 'Nomor telepon harus berupa angka',
+    //             'unit_id.required' => 'Unit kerja wajib dipilih',
+    //             'status.required' => 'Status wajib dipilih',
+    //             'hubungan_kerja.required' => 'Hubungan kerja wajib diisi',
+    //             'jabatan.required' => 'Jabatan wajib diisi'
+    //         ]);
+
+    //         // Validasi data riwayat
+    //         $validatedRiwayat = $request->validate([
+    //             'nama_instansi' => 'required|string|max:255',
+    //             'jabatan' => 'required|string|max:255',
+    //             'tahun' => 'required|numeric|digits:4',
+    //             'file_pendukung' => 'nullable|file|max:2048|mimes:pdf,doc,docx'
+    //         ], [
+    //             'nama_instansi.required' => 'Nama instansi wajib diisi',
+    //             'jabatan.required' => 'Jabatan wajib diisi',
+    //             'tahun.required' => 'Tahun wajib diisi',
+    //             'tahun.numeric' => 'Tahun harus berupa angka',
+    //             'tahun.digits' => 'Tahun harus 4 digit',
+    //             'file_pendukung.max' => 'Ukuran file maksimal 2MB',
+    //             'file_pendukung.mimes' => 'Format file harus PDF, DOC, atau DOCX'
+    //         ]);
+
+    //         // Update foto biodata jika ada
+    //         if ($request->hasFile('foto')) {
+    //             if ($biodata->foto) {
+    //                 Storage::delete($biodata->foto);
+    //             }
+    //             $validatedBiodata['foto'] = $request->file('foto')->store('foto-pegawai');
+    //         }
+
+    //         // Update biodata
+    //         $biodata->update($validatedBiodata);
+
+    //         // Update data pegawai
+    //         if ($biodata->pegawai) {
+    //             $biodata->pegawai->update([
+    //                 'unit_id' => $validatedBiodata['unit_id'],
+    //                 'status' => $validatedBiodata['status'],
+    //                 'hubungan_kerja' => $validatedBiodata['hubungan_kerja'],
+    //                 'jabatan' => $validatedBiodata['jabatan']
+    //             ]);
+    //         }
+
+    //         // Simpan riwayat baru
+    //         $riwayatData = [
+    //             'biodata_id' => $biodata->id,
+    //             'nama_instansi' => $validatedRiwayat['nama_instansi'],
+    //             'jabatan' => $validatedRiwayat['jabatan'],
+    //             'tahun' => $validatedRiwayat['tahun']
+    //         ];
+
+    //         if ($request->hasFile('file_pendukung')) {
+    //             $riwayatData['file_pendukung'] = $request->file('file_pendukung')->store('file-pendukung');
+    //         }
+
+    //         Riwayat::create($riwayatData);
+
+    //         DB::commit();
+    //         toast()->success('Berhasil', 'Data pegawai dan riwayat berhasil diperbarui');
+    //         return redirect()->route('pegawai.index');
+
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
+    //         Log::error('Error updating biodata and storing riwayat: ' . $e->getMessage());
+    //         toast()->error('Gagal', 'Terjadi kesalahan saat memperbarui data');
+    //         return back()->withInput();
+    //     }
+    // }
+
+    public function update(Request $request, $id)
     {
-        $biodata = Biodata::where('slug', $slug)->firstOrFail();
+        // Validasi request
+        $request->validate([
+            // Biodata validation
+            'nip' => 'required|string|max:255',
+            'nama_pegawai' => 'required|string|max:255',
+            'jenis_kelamin' => 'required|in:Laki-Laki,Perempuan',
+            'agama' => 'required|string',
+            'tempat_lahir' => 'required|string',
+            'tanggal_lahir' => 'required|date',
+            'alamat' => 'required|string',
+            'email' => 'required|email',
+            'no_telp' => 'required|string',
+            'foto' => 'nullable|image|max:2048',
+
+            // Pegawai validation
+            'unit_id' => 'required|exists:units,id',
+            'status' => 'required|in:Aktif,Non-Aktif',
+            'hubungan_kerja' => 'required|string',
+            'jabatan' => 'required|string',
+
+            // Riwayat validation (if any)
+            'riwayat.*.nama_instansi' => 'required|string',
+            'riwayat.*.jabatan' => 'required|string',
+            'riwayat.*.tahun' => 'required|numeric|min:1900|max:' . (date('Y') + 1),
+            'riwayat.*.file_pendukung' => 'nullable|file|max:2048'
+        ]);
 
         try {
-            $rules = [
-                'pegawai_id' => 'nullable|exists:pegawais,id',
-                'riwayat_id' => 'nullable|exists:riwayats,id',
-                'foto' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'nip' => 'required|max:255|unique:biodatas,nip,' . $biodata->id,
-                'nama_pegawai' => 'required|max:255',
-                'jenis_kelamin' => 'required|in:Laki-Laki,Perempuan',
-                'agama' => 'required|in:Islam,Kristen Protestan,Katolik,Hindu,Buddha,Konghucu',
-                'tempat_lahir' => 'required|max:255',
-                'tanggal_lahir' => 'required|date_format:Y-m-d',
-                'alamat' => 'required|max:255',
-                'email' => 'required|email|unique:biodatas,email,' . $biodata->id,
-                'no_telp' => 'required|numeric'
-            ];
+            DB::beginTransaction();
 
-            $validateData = $request->validate($rules);
+            // Update Biodata
+            $biodata = Biodata::findOrFail($id);
+            $biodataData = $request->only([
+                'nip', 'nama_pegawai', 'jenis_kelamin', 'agama',
+                'tempat_lahir', 'tanggal_lahir', 'alamat', 'email', 'no_telp'
+            ]);
 
-            $validateData['slug'] = SlugService::createSlug(Biodata::class, 'slug', $validateData['nip']);
-
+            // Handle foto upload
             if ($request->hasFile('foto')) {
                 if ($biodata->foto) {
-                    // Delete old image
                     Storage::delete($biodata->foto);
                 }
-                // Store new image in storage
-                $validateData['foto'] = $request->file('foto')->store('foto-pegawai');
-            } else {
-                // Keep old image if no new image is uploaded
-                $validateData['foto'] = $biodata->foto;
+                $biodataData['foto'] = $request->file('foto')->store('foto-pegawai');
             }
 
-            $biodata->update($validateData);
+            $biodata->update($biodataData);
 
-            alert()->success('Berhasil', 'Biodata berhasil diubah');
-            return redirect('/pegawai')->withInput();
+            // Update Pegawai
+            $pegawaiData = $request->only([
+                'unit_id', 'status', 'hubungan_kerja', 'jabatan'
+            ]);
+            $biodata->pegawai->update($pegawaiData);
+
+            // Handle Riwayat
+            if ($request->has('riwayat')) {
+                foreach ($request->riwayat as $riwayatData) {
+                    $riwayat = new Riwayat([
+                        'nama_instansi' => $riwayatData['nama_instansi'],
+                        'jabatan' => $riwayatData['jabatan'],
+                        'tahun' => $riwayatData['tahun']
+                    ]);
+
+                    if (isset($riwayatData['file_pendukung']) && $riwayatData['file_pendukung'] instanceof \Illuminate\Http\UploadedFile) {
+                        $riwayat->file_pendukung = $riwayatData['file_pendukung']->store('file-pendukung');
+                    }
+
+                    $biodata->riwayat()->save($riwayat);
+                }
+            }
+
+            DB::commit();
+            toast()->success('success', 'Data pegawai berhasil diperbarui');
+            return redirect()->route('pegawai')->withInput();
         } catch (\Exception $e) {
-            dd($e->getMessage());
-
+            DB::rollback();
+            toast()->error('error', 'Terjadi kesalahan saat memperbarui data: ' . $e->getMessage());
+            return  back()->withInput();
         }
     }
+
 
     /**
      * Remove the specified resource from storage.

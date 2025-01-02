@@ -9,7 +9,7 @@
                   <a href="{{ route('pegawai') }}" class="btn btn-secondary" id="kembaliDaftarBtn">
                      <i data-feather="arrow-left"></i> Kembali ke Daftar
                   </a>
-                  <a href="{{ route('pegawai.edit', $biodata->slug) }}" class="btn btn-warning" id="editBtn">
+                  <a href="{{ route('pegawai.edit', $biodata->id) }}" class="btn btn-warning" id="editBtn">
                      <i data-feather="edit"></i> Edit
                   </a>
                   <form action="{{ route('pegawai.destroy', $biodata->id) }}" method="POST" id="hapusForm" style="display:inline;">
@@ -32,10 +32,10 @@
                <div class="card-body text-center">
                   @if($biodata->foto)
                      <img src="{{ asset('storage/' . $biodata->foto) }}" alt="{{ $biodata->nama_pegawai }}" 
-                          class="img-fluid mb-3" style="max-width: 150px;">
+                        class="img-fluid mb-3" style="max-width: 150px;">
                   @else
                      <img src="{{ asset('images/default-profile.png') }}" alt="Default Profile" 
-                          class="img-fluid mb-3" style="max-width: 150px;">
+                        class="img-fluid mb-3" style="max-width: 150px;">
                   @endif
                   <h5 class="card-title">{{ $biodata->nama_pegawai }}</h5>
                   <p class="card-text text-muted">{{ $biodata->nip }}</p>
@@ -177,12 +177,13 @@
                                           @endif
                                        </td>
                                        <td>
-                                          <button class="btn btn-sm btn-warning" onclick="editRiwayat({{ $riwayat->id }})">
-                                             <i data-feather="edit"></i>
-                                          </button>
-                                          <button class="btn btn-sm btn-danger" onclick="deleteRiwayat({{ $riwayat->id }})">
-                                             <i data-feather="trash-2"></i>
-                                          </button>
+                                          <form action="{{ route('pegawai.riwayat.destroy', $riwayat->id) }}" method="POST" style="display:inline;">
+                                             @csrf
+                                             @method('DELETE')
+                                             <button type="submit" class="btn btn-danger remove-riwayat" onclick="return confirm('Apakah yakin ingin menghapus data?')">
+                                                <i data-feather="trash-2" style="width:20px;height:20px;"></i>
+                                             </button>
+                                          </form>
                                        </td>
                                     </tr>
                                  @empty

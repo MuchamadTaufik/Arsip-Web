@@ -36,9 +36,9 @@ Route::group(['middleware' => ['auth', 'role:admin']], function(){
    // Edit Riwayat
    Route::delete('/pegawai/riwayat/delete/{id}', [RiwayatController::class, 'destroy'])->name('pegawai.riwayat.destroy');
 
-   
+   //Edit Pegawai
    Route::get('/pegawai/{id}/edit', [BiodataController::class, 'edit'])->name('pegawai.edit');
 
-   Route::put('/pegawai/update/{slug}', [BiodataController::class, 'update'])->name('pegawai.update');
+   Route::put('/pegawai/update/{id}', [BiodataController::class, 'update'])->name('pegawai.update');
    
 });

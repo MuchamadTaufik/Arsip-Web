@@ -38,7 +38,6 @@ Route::group(['middleware' => ['auth', 'role:admin']], function(){
 
    //Edit Pegawai
    Route::get('/pegawai/{id}/edit', [BiodataController::class, 'edit'])->name('pegawai.edit');
-
    Route::put('/pegawai/update/{id}', [BiodataController::class, 'update'])->name('pegawai.update');
    
 });

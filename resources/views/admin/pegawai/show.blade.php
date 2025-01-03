@@ -9,6 +9,8 @@
                   <a href="{{ route('pegawai') }}" class="btn btn-secondary" id="kembaliDaftarBtn">
                      <i data-feather="arrow-left"></i> Kembali ke Daftar
                   </a>
+
+                  @can('isAdmin')
                   <a href="{{ route('pegawai.edit', $biodata->id) }}" class="btn btn-warning" id="editBtn">
                      <i data-feather="edit"></i> Edit
                   </a>
@@ -19,6 +21,8 @@
                         <i data-feather="trash-2"></i> Hapus
                      </button>
                   </form>
+                  @endcan
+                  
                </div>
             </div>
          </div>
@@ -156,7 +160,10 @@
                                     <th>Jabatan</th>
                                     <th>Tahun</th>
                                     <th>File Pendukung</th>
+                                    @can('isAdmin')
                                     <th>Aksi</th>
+                                    @endcan
+                                    
                                  </tr>
                               </thead>
                               <tbody>
@@ -176,6 +183,7 @@
                                              -
                                           @endif
                                        </td>
+                                       @can('isAdmin')
                                        <td>
                                           <form action="{{ route('pegawai.riwayat.destroy', $riwayat->id) }}" method="POST" style="display:inline;">
                                              @csrf
@@ -185,6 +193,8 @@
                                              </button>
                                           </form>
                                        </td>
+                                       @endcan
+                                       
                                     </tr>
                                  @empty
                                     <tr>

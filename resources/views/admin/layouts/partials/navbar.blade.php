@@ -9,6 +9,13 @@
         <h1 class="navbar-text ms-3 mb-0">Arsip Digital Universitas Pasundan</h1>
 
         <!-- Tombol Kembali di kanan -->
-        <a class="btn btn-outline-primary ms-auto" href="{{ route('home') }}" >Kembali<a>
+        @can('isAdmin')
+            <a class="btn btn-outline-primary ms-auto" href="{{ route('home') }}" >Kembali<a>
+        @endcan
+
+        @can('isPegawai')
+            <a class="btn btn-outline-primary ms-auto" href="{{ route('arsip') }}" >Kembali<a>
+
+        @endcan
     </div>
 </nav>

@@ -10,6 +10,7 @@
                            <a href="{{ route('dokumen') }}" class="btn btn-secondary" id="kembaliDaftarBtn">
                               <i data-feather="arrow-left"></i> Kembali ke Daftar
                            </a>
+                           @can('isAdmin')
                            <a href="{{ route('dokumen.edit', $dokumen->id) }}" class="btn btn-warning" id="editBtn">
                               <i data-feather="edit"></i> Edit
                            </a>
@@ -20,6 +21,7 @@
                                  <i data-feather="trash-2"></i> Hapus
                               </button>
                            </form>
+                           @endcan
                         </div>
                      </div>
                      <h4>Data Dokumen</h4>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class AuthController extends Controller
 {
@@ -19,20 +20,27 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required'
         ]);
-
+    
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-
+            
             $user = Auth::user();
-
+    
             if ($user->role === 'admin') {
                 toast()->success('Hallo', 'Selamat Datang ' . $user->username);
-                return redirect()->intended('/')->withInput();
+                return redirect()->route('home'); // Direktori ke halaman Admin
+            } elseif ($user->role === 'pegawai') {
+                toast()->success('Hallo', 'Selamat Datang ' . $user->username);
+                return redirect()->route('arsip'); // Direktori ke halaman Pegawai
             }
+
         }
-        toast()->error('Gagal', 'Login Gagal');
+    
+        // Jika login gagal karena kredensial salah
+        toast()->error('Gagal', 'Email atau password yang Anda masukkan salah.');
         return back()->withInput();
     }
+    
 
     public function logout(Request $request)
     {

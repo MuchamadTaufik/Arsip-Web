@@ -27,6 +27,13 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('123456')
         ]);
 
+        User::create([
+            'username' => 'Muchamad Taufik Mulyadi',
+            'role' => 'pegawai',
+            'email' => 'muhamadtaufikm10@gmail.com',
+            'password' => bcrypt('123456')
+        ]);
+
         $this->call(UnitSeeder::class);
     }
 }

@@ -11,7 +11,9 @@
                             <div class="search-box">
                                 <input type="text" id="searchInput" class="form-control" placeholder="Cari Dokumen...">
                             </div>
+                            @can('isAdmin')
                             <a href="{{ route('dokumen.create') }}" class="btn btn-primary"><strong>Tambah</strong></a>
+                            @endcan
                         </div>
                         <thead>
                             <tr>
@@ -47,6 +49,7 @@
                                         <a href="{{ route('dokumen.show', $data->id) }}">
                                             <i data-feather="eye" class="text-primary"></i>
                                         </a>
+                                        @can('isAdmin')
                                         <form action="{{ route('dokumen.delete', $data->id) }}" method="post" class="m-0 p-0">
                                             @csrf
                                             @method('delete')
@@ -54,6 +57,8 @@
                                                 <i data-feather="trash-2" class="text-danger" style="width:20px;height:20px;"></i>
                                             </button>
                                         </form>
+                                        @endcan
+                                        
                                     </div>
                                     
                                 </td>
@@ -66,4 +71,24 @@
         </div>
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const tableRows = document.querySelectorAll('tbody tr');
+    
+            searchInput.addEventListener('input', function() {
+                const query = searchInput.value.toLowerCase();
+    
+                tableRows.forEach(row => {
+                    const rowData = row.innerText.toLowerCase();
+                    if (rowData.includes(query)) {
+                        row.style.display = ''; // Tampilkan baris
+                    } else {
+                        row.style.display = 'none'; // Sembunyikan baris
+                    }
+                });
+            });
+        });
+    </script>
+    
 @endsection

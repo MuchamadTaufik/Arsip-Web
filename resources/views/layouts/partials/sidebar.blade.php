@@ -22,9 +22,14 @@
             </a>
          </li>
          <li class="sidebar-item">
-            <a class="sidebar-link" href="index.html">
-               <span class="align-middle">Logout</span>
-            </a>
+            
+            <form action="{{ route('logout') }}" method="POST">
+               @csrf
+               <button type="submit" class="sidebar-link" style="background: none; border: none;">
+                   <span class="align-middle">Logout</span>
+               </button>
+           </form>
+           
          </li>
       </ul>
    </div>

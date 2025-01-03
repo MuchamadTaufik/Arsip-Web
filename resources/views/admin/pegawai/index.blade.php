@@ -33,7 +33,10 @@
                             <div class="search-box">
                                 <input type="text" id="searchInput" class="form-control" placeholder="Cari Pegawai...">
                             </div>
-                            <a href="{{ route('pegawai.create') }}" class="btn btn-primary"><strong>Tambah</strong></a>
+                            @can('isAdmin')
+                                <a href="{{ route('pegawai.create') }}" class="btn btn-primary"><strong>Tambah</strong></a>
+
+                            @endcan
                         </div>
                         <thead>
                             <tr>
@@ -58,13 +61,15 @@
                                         <a href="{{ route('pegawai.show', $data->slug) }}">
                                             <i data-feather="eye" class="text-primary"></i>
                                         </a>
-                                        <form action="{{ route('pegawai.destroy', $data->id) }}" method="post" class="m-0 p-0">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="submit" onclick="return confirm('Apakah yakin ingin menghapus data?')" style="all: unset; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                                                <i data-feather="trash-2" class="text-danger" style="width:20px;height:20px;"></i>
-                                            </button>
+                                        @can('isAdmin')
+                                            <form action="{{ route('pegawai.destroy', $data->id) }}" method="post" class="m-0 p-0">
+                                                @csrf
+                                                @method('delete')
+                                                <button type="submit" onclick="return confirm('Apakah yakin ingin menghapus data?')" style="all: unset; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                                                    <i data-feather="trash-2" class="text-danger" style="width:20px;height:20px;"></i>
+                                                </button>
                                         </form>
+                                        @endcan
                                     </div>
                                     
                                 </td>

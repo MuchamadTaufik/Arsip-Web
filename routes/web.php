@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\BiodataController;
 use App\Http\Controllers\Admin\DokumenController;
+use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Dashboard\DashboardAdminController;
 use App\Http\Controllers\Admin\RiwayatController;
@@ -49,5 +50,8 @@ Route::group(['middleware' => ['auth', 'role:admin']], function(){
    Route::get('/dokumen/show/{dokumen}', [DokumenController::class, 'show'])->name('dokumen.show');
    Route::put('/dokumen/update/{dokumen}', [DokumenController::class, 'update'])->name('dokumen.update');
    Route::delete('/dokumen/delete/{dokumen}', [DokumenController::class, 'destroy'])->name('dokumen.delete');
+
+   Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
+   Route::get('/laporan/download', [LaporanController::class, 'export'])->name('reports.export');
    
 });

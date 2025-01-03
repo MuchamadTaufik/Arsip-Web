@@ -17,7 +17,7 @@
             </a>
          </li>
          <li class="sidebar-item">
-            <a class="sidebar-link" href="index.html">
+            <a class="sidebar-link" href="{{ route('laporan') }}">
                <span class="align-middle">Laporan</span>
             </a>
          </li>

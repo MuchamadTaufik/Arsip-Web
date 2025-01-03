@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\BiodataController;
+use App\Http\Controllers\Admin\DokumenController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Dashboard\DashboardAdminController;
 use App\Http\Controllers\Admin\RiwayatController;
@@ -39,5 +40,10 @@ Route::group(['middleware' => ['auth', 'role:admin']], function(){
    //Edit Pegawai
    Route::get('/pegawai/{id}/edit', [BiodataController::class, 'edit'])->name('pegawai.edit');
    Route::put('/pegawai/update/{id}', [BiodataController::class, 'update'])->name('pegawai.update');
+
+   //Dokumen
+   Route::get('/dokumen', [DokumenController::class, 'index'])->name('dokumen');
+   Route::get('/dokumen/create', [DokumenController::class, 'create'])->name('dokumen.create');
+   Route::post('/dokumen/store', [DokumenController::class, 'store'])->name('dokumen.store');
    
 });

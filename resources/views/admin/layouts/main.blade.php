@@ -22,6 +22,19 @@
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
 	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+	{{-- css trix --}}
+    <link rel="stylesheet" href="/css/trix.css" />
+
+    <style>
+      trix-toolbar [data-trix-button-group="file-tools"]{
+          display: none;
+        }
+      trix-editor[readonly] {
+            pointer-events: none;
+            background-color: #f7f7f7;
+        }
+    </style>
 </head>
 
 <body>
@@ -48,156 +61,13 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 	<script src="/js/app.js"></script>
-
-	{{-- <script>
-				document.addEventListener('DOMContentLoaded', function() {
-			// Inisialisasi Select2
-			const searchSelect = $('#searchPegawai').select2({
-				placeholder: 'Cari Pegawai...',
-				allowClear: true,
-				minimumInputLength: 2,
-				width: '100%',
-				templateResult: formatResult,
-				templateSelection: formatSelection,
-				ajax: {
-						url: '{{ route("pegawai.search") }}',
-						dataType: 'json',
-						delay: 250,
-						data: function(params) {
-							return {
-								q: params.term,
-								_token: '{{ csrf_token() }}'
-							};
-						},
-						processResults: function(data) {
-							return {
-								results: data.map(item => ({
-										id: item.id,
-										text: `${item.nama_pegawai} (${item.nip})`,
-										foto_url: item.foto_url,
-										data: item // Simpan semua data untuk digunakan nanti
-								}))
-							};
-						},
-						cache: true
-				}
-			});
-
-			// Format tampilan hasil pencarian
-			function formatResult(state) {
-				if (!state.id) return state.text;
-				
-				const foto_url = state.foto_url || '/img/logo.png';
-				return $(
-						`<div class="select2-result-pegawai d-flex align-items-center">
-							<img src="${foto_url}" class="select2-result-pegawai__avatar me-2" 
-								style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;"/>
-							<div class="select2-result-pegawai__info">
-								<div class="select2-result-pegawai__name">${state.text}</div>
-							</div>
-						</div>`
-				);
-			}
-
-			// Format tampilan item terpilih
-			function formatSelection(state) {
-				if (!state.id) return state.text;
-				return state.text;
-			}
-
-			// Event handler saat item dipilih
-			searchSelect.on('select2:select', function(e) {
-				const selectedData = e.params.data.data;
-				console.log('Selected Data:', selectedData); // Debug
-
-				// Isi form biodata
-				fillBiodataForm(selectedData);
-				
-				// Isi form kepegawaian
-				if (selectedData.pegawai) {
-						fillKepegawaianForm(selectedData.pegawai);
-				}
-
-				// Tampilkan riwayat
-				if (selectedData.riwayat && selectedData.riwayat.length > 0) {
-						displayRiwayat(selectedData.riwayat);
-				}
-
-				// Update foto
-				if (selectedData.foto_url) {
-						$('#photoPreview').attr('src', selectedData.foto_url).show();
-				}
-			});
-
-			// Handler untuk mengisi form biodata
-			function fillBiodataForm(data) {
-				$('#nip').val(data.nip);
-				$('#nama_pegawai').val(data.nama_pegawai);
-				$('#jenis_kelamin').val(data.jenis_kelamin);
-				$('#agama').val(data.agama);
-				$('#tempat_lahir').val(data.tempat_lahir);
-				$('#tanggal_lahir').val(data.tanggal_lahir);
-				$('#alamat').val(data.alamat);
-				$('#email').val(data.email);
-				$('#no_telp').val(data.no_telp);
-			}
-
-			// Handler untuk mengisi form kepegawaian
-			function fillKepegawaianForm(pegawaiData) {
-				$('select[name="unit_id"]').val(pegawaiData.unit_id);
-				$('#status').val(pegawaiData.status);
-				$('#hubungan_kerja').val(pegawaiData.hubungan_kerja);
-				$('#jabatan').val(pegawaiData.jabatan);
-			}
-
-			// Handler untuk menampilkan riwayat
-			function displayRiwayat(riwayatData) {
-				const container = $('#riwayatContainer');
-				container.empty(); // Bersihkan container terlebih dahulu
-
-				riwayatData.forEach((item, index) => {
-						const riwayatHtml = `
-							<div class="riwayat-item card mb-3">
-								<div class="card-body">
-										<div class="d-flex justify-content-between align-items-center mb-3">
-											<h6 class="card-subtitle">Riwayat #${index + 1}</h6>
-										</div>
-										<div class="row g-3">
-											<div class="col-md-12">
-												<input type="text" class="form-control" value="${item.nama_instansi}" readonly>
-											</div>
-											<div class="col-md-12">
-												<input type="text" class="form-control" value="${item.jabatan}" readonly>
-											</div>
-											<div class="col-md-12">
-												<input type="text" class="form-control" value="${item.tahun}" readonly>
-											</div>
-											${item.file_pendukung ? `
-											<div class="col-md-12">
-												<a href="${item.file_pendukung}" target="_blank" class="btn btn-sm btn-info">
-														<i data-feather="file"></i> Lihat File
-												</a>
-											</div>
-											` : ''}
-										</div>
-								</div>
-							</div>
-						`;
-						container.append(riwayatHtml);
-				});
-
-				// Re-initialize Feather icons
-				feather.replace();
-			}
-
-			// Event handler untuk clear/reset
-			searchSelect.on('select2:clear', function() {
-				$('#pegawaiForm')[0].reset();
-				$('#photoPreview').hide();
-				$('#riwayatContainer').empty();
-			});
-		});
-	</script> --}}
+	<script src="/js/trix.js"></script>
+	<script>
+		document.addEventListener('trix-file-accept', function(e){
+			e.preventDefault();
+		  })
+	</script>
+  
 
 	<script>
 			document.addEventListener('DOMContentLoaded', function() {

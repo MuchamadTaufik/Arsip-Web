@@ -12,7 +12,7 @@
             </a>
          </li>
          <li class="sidebar-item">
-            <a class="sidebar-link" href="index.html">
+            <a class="sidebar-link" href="{{ route('dokumen') }}">
                <span class="align-middle">Dokumen</span>
             </a>
          </li>

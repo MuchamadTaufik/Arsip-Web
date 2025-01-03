@@ -80,7 +80,7 @@ class BiodataController extends Controller
                 'riwayat.*.nama_instansi' => 'nullable',
                 'riwayat.*.jabatan' => 'nullable',
                 'riwayat.*.tahun' => 'nullable|numeric',
-                'riwayat.*.file_pendukung' => 'nullable|file|max:2048'
+                'riwayat.*.file_pendukung' => 'nullable|file|max:4096'
             ]);
 
             // Create Biodata
@@ -359,8 +359,8 @@ class BiodataController extends Controller
             // Riwayat validation (if any)
             'riwayat.*.nama_instansi' => 'required|string',
             'riwayat.*.jabatan' => 'required|string',
-            'riwayat.*.tahun' => 'required|numeric|min:1900|max:' . (date('Y') + 1),
-            'riwayat.*.file_pendukung' => 'nullable|file|max:2048'
+            'riwayat.*.tahun' => 'required|numeric',
+            'riwayat.*.file_pendukung' => 'nullable|file|max:4096'
         ]);
 
         try {

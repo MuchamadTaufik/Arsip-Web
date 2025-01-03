@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Dokumen;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreDokumenRequest;
 use App\Http\Requests\UpdateDokumenRequest;
 
@@ -28,7 +29,7 @@ class DokumenController extends Controller
         $lastDocument = Dokumen::whereYear('created_at', $year)->orderBy('id', 'desc')->first();
         $lastNumber = $lastDocument ? intval(substr($lastDocument->no_dokumen, 4, -5)) : 0;
         $newNumber = str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT); // Format: 0001
-        $noDokumen = "dok-$newNumber-$year";
+        $noDokumen = "Dok-$newNumber-$year";
         return view('admin.dokumen.create', compact('noDokumen'));
     }
 
@@ -55,7 +56,7 @@ class DokumenController extends Controller
         $lastDocument = Dokumen::whereYear('created_at', $year)->orderBy('id', 'desc')->first();
         $lastNumber = $lastDocument ? intval(substr($lastDocument->no_dokumen, 4, -5)) : 0;
         $newNumber = str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT); // Format: 0001
-        $noDokumen = "dok-$newNumber-$year";
+        $noDokumen = "Dok-$newNumber-$year";
 
         // Buat data dokumen baru
         Dokumen::create([
@@ -72,7 +73,7 @@ class DokumenController extends Controller
             'tingkat' => $request->tingkat,
         ]);
         
-         if ($request->hasFile('file')) {
+        if ($request->hasFile('file')) {
             $fileFileName = $request->file('file')->store('file-dokumen');
             $validateData['file'] = $fileFileName;
         }
@@ -87,7 +88,7 @@ class DokumenController extends Controller
      */
     public function show(Dokumen $dokumen)
     {
-        //
+        return view('admin.dokumen.show', compact('dokumen'));
     }
 
     /**
@@ -95,7 +96,7 @@ class DokumenController extends Controller
      */
     public function edit(Dokumen $dokumen)
     {
-        //
+        return view('admin.dokumen.edit', compact('dokumen'));
     }
 
     /**
@@ -103,7 +104,41 @@ class DokumenController extends Controller
      */
     public function update(UpdateDokumenRequest $request, Dokumen $dokumen)
     {
-        //
+        try {
+            $rules = [
+                'nama_dokumen' => 'required|max:255',
+                'uraian_singkat' => 'required',
+                'tanggal_dokumen' => 'required|date_format:Y-m-d',
+                'jenis_dokumen' => 'required',
+                'diunggah_oleh' => 'required',
+                'penerima' => 'required|max:255',
+                'menu_referensi' => 'required|max:255',
+                'file' => 'file|max:4096',
+                'status' => 'required',
+                'tingkat' => 'required',
+            ];
+            $validateData = $request->validate($rules);
+
+            if ($request->hasFile('file')) {
+                if ($dokumen->file) {
+                    // Delete old image
+                    Storage::delete($dokumen->file);
+                }
+                // Store new image in storage
+                $validateData['file'] = $request->file('file')->store('file-dokumen');
+            } else {
+                // Keep old image if no new image is uploaded
+                $validateData['file'] = $dokumen->file;
+            }
+
+            $dokumen->update($validateData);
+
+            alert()->success('Berhasil', 'Dokumen berhasil diubah');
+            return redirect('/dokumen')->withInput();
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+
+        }
     }
 
     /**
@@ -111,6 +146,16 @@ class DokumenController extends Controller
      */
     public function destroy(Dokumen $dokumen)
     {
-        //
+        // Hapus gambar jika ada
+        if ($dokumen->file) {
+            Storage::delete($dokumen->file);
+        }
+
+        Dokumen::destroy($dokumen->id);
+        
+        // Menampilkan notifikasi sukses dan redirect
+        alert()->success('Success', 'Dokumen berhasil dihapus');
+        return redirect('/dokumen')->withInput();
+
     }
 }

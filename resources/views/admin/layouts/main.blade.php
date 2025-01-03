@@ -34,6 +34,21 @@
             pointer-events: none;
             background-color: #f7f7f7;
         }
+
+		  html, body {
+				height: 100%;
+				margin: 0;
+				display: flex;
+				flex-direction: column;
+			}
+			.footer {
+				margin-top: auto;
+				background-color: #f8f9fa;
+				padding: 10px 0;
+				box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+				text-align: center;
+				width: 100%;
+			}
     </style>
 </head>
 
@@ -51,7 +66,7 @@
 			</main>
 
 			{{-- footer start --}}
-         @include('layouts.partials.footer')
+         @include('admin.layouts.partials.footer')
          {{-- footer end --}}
 		</div>
 	</div>

@@ -45,5 +45,9 @@ Route::group(['middleware' => ['auth', 'role:admin']], function(){
    Route::get('/dokumen', [DokumenController::class, 'index'])->name('dokumen');
    Route::get('/dokumen/create', [DokumenController::class, 'create'])->name('dokumen.create');
    Route::post('/dokumen/store', [DokumenController::class, 'store'])->name('dokumen.store');
+   Route::get('/dokumen/edit/{dokumen}', [DokumenController::class, 'edit'])->name('dokumen.edit');
+   Route::get('/dokumen/show/{dokumen}', [DokumenController::class, 'show'])->name('dokumen.show');
+   Route::put('/dokumen/update/{dokumen}', [DokumenController::class, 'update'])->name('dokumen.update');
+   Route::delete('/dokumen/delete/{dokumen}', [DokumenController::class, 'destroy'])->name('dokumen.delete');
    
 });

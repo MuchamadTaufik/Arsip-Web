@@ -43,13 +43,28 @@
                         <div class="col-md-6">
                            <div class="form-group">
                                  <label for="menu_referensi">Menu Referensi</label>
-                                 <input type="text" class="form-control @error('menu_referensi') is-invalid @enderror" id="menu_referensi" name="menu_referensi" placeholder="Masukan Menu Referensi..." value="{{ old('menu_referensi', $dokumen->menu_referensi) }}" required/>
+                                 <select class="form-control @error('menu_referensi') is-invalid @enderror" id="menu_referensi" name="menu_referensi" required>
+                                    <option value="" disabled {{ old('menu_referensi', $dokumen->menu_referensi) == '' ? 'selected' : '' }}>Pilih Menu Referensi</option>
+                                    <option value="Pembinaan Mahasiswa" {{ old('menu_referensi', $dokumen->menu_referensi) == 'Pembinaan Mahasiswa' ? 'selected' : '' }}>Pembinaan Mahasiswa</option>
+                                    <option value="Deta Sering" {{ old('menu_referensi', $dokumen->menu_referensi) == 'Deta Sering' ? 'selected' : '' }}>Deta Sering</option>
+                                    <option value="Bahan Ajar" {{ old('menu_referensi', $dokumen->menu_referensi) == 'Bahan Ajar' ? 'selected' : '' }}>Bahan Ajar</option>
+                                    <option value="Orasi Ilmiah" {{ old('menu_referensi', $dokumen->menu_referensi) == 'Orasi Ilmiah' ? 'selected' : '' }}>Orasi Ilmiah</option>
+                                    <option value="Pembimbing Dosen" {{ old('menu_referensi', $dokumen->menu_referensi) == 'Pembimbing Dosen' ? 'selected' : '' }}>Pembimbing Dosen</option>
+                                    <option value="Tugas Tambahan" {{ old('menu_referensi', $dokumen->menu_referensi) == 'Tugas Tambahan' ? 'selected' : '' }}>Tugas Tambahan</option>
+                                    <option value="Penelitian" {{ old('menu_referensi', $dokumen->menu_referensi) == 'Penelitian' ? 'selected' : '' }}>Penelitian</option>
+                                    <option value="Publikasi" {{ old('menu_referensi', $dokumen->menu_referensi) == 'Publikasi' ? 'selected' : '' }}>Publikasi</option>
+                                    <option value="Paten/HKI" {{ old('menu_referensi', $dokumen->menu_referensi) == 'Paten/HKI' ? 'selected' : '' }}>Paten/HKI</option>
+                                    <option value="Anggota Profesi" {{ old('menu_referensi', $dokumen->menu_referensi) == 'Anggota Profesi' ? 'selected' : '' }}>Anggota Profesi</option>
+                                    <option value="Penghargaan" {{ old('menu_referensi', $dokumen->menu_referensi) == 'Penghargaan' ? 'selected' : '' }}>Penghargaan</option>
+                                    <option value="Penunjang Lain" {{ old('menu_referensi', $dokumen->menu_referensi) == 'Penunjang Lain' ? 'selected' : '' }}>Penunjang Lain</option>
+                                    <option value="Pengabdian" {{ old('menu_referensi', $dokumen->menu_referensi) == 'Pengabdian' ? 'selected' : '' }}>Pengabdian</option>
+                                 </select>
                                  @error('menu_referensi')
                                     <div class="invalid-feedback">
-                                       {{ $message }}
+                                          {{ $message }}
                                     </div>
                                  @enderror
-                           </div>
+                              </div>
                         </div>
                         <div class="col-md-6">
                            <div class="form-group">
@@ -102,9 +117,8 @@
                                  <label for="title">Status Dokumen</label>
                                  <select class="form-control @error('status') is-invalid @enderror" id="status" name="status" required>
                                     <option value="" disabled {{ old('status', $dokumen->status) == '' ? 'selected' : '' }}>Status Dokumen</option>
-                                    <option value="Status_1" {{ old('status', $dokumen->status) == 'Status_1' ? 'selected' : '' }}>Status_1</option>
-                                    <option value="Status_2" {{ old('status', $dokumen->status) == 'Status_2' ? 'selected' : '' }}>Status_2</option>
-                                    <option value="Status_3" {{ old('status', $dokumen->status) == 'Status_3' ? 'selected' : '' }}>Status_3</option>
+                                    <option value="Baru" {{ old('status', $dokumen->status) == 'Baru' ? 'selected' : '' }}>Baru</option>
+                                    <option value="Lama" {{ old('status', $dokumen->status) == 'Lama' ? 'selected' : '' }}>Lama</option>
                                  </select>
                                  @error('status')
                                     <div class="invalid-feedback">
@@ -116,7 +130,11 @@
                         <div class="col-md-6">
                            <div class="form-group">
                                  <label for="jenis_dokumen">Jenis Dokumen</label>
-                                 <input type="text" class="form-control @error('jenis_dokumen') is-invalid @enderror" id="jenis_dokumen" name="jenis_dokumen" placeholder="Masukan Jenis Dokumen..." value="{{ old('jenis_dokumen', $dokumen->jenis_dokumen) }}" required/>
+                                 <select class="form-control @error('jenis_dokumen') is-invalid @enderror" id="jenis_dokumen" name="jenis_dokumen" required>
+                                    <option value="" disabled {{ old('jenis_dokumen', $dokumen->jenis_dokumen) == '' ? 'selected' : '' }}>Pilih Jenis Dokumen</option>
+                                    <option value="Baru" {{ old('jenis_dokumen', $dokumen->jenis_dokumen) == 'Baru' ? 'selected' : '' }}>Baru</option>
+                                    <option value="Lama" {{ old('jenis_dokumen', $dokumen->jenis_dokumen) == 'Lama' ? 'selected' : '' }}>Lama</option>
+                                 </select>
                                  @error('jenis_dokumen')
                                     <div class="invalid-feedback">
                                        {{ $message }}
@@ -129,8 +147,10 @@
                                  <label for="title">Tingkat</label>
                                  <select class="form-control @error('tingkat') is-invalid @enderror" id="tingkat" name="tingkat" required>
                                     <option value="" disabled {{ old('tingkat', $dokumen->tingkat) == '' ? 'selected' : '' }}>Tingkat</option>
-                                    <option value="Penting" {{ old('tingkat', $dokumen->tingkat) == 'Penting' ? 'selected' : '' }}>Penting</option>
-                                    <option value="Tidak Penting" {{ old('tingkat', $dokumen->tingkat) == 'Tidak Penting' ? 'selected' : '' }}>Tidak Penting</option>
+                                    <option value="Universitas" {{ old('tingkat', $dokumen->tingkat) == 'Universitas' ? 'selected' : '' }}>Universitas</option>
+                                    <option value="Fakultas" {{ old('tingkat', $dokumen->tingkat) == 'Fakultas' ? 'selected' : '' }}>Fakultas</option>
+                                    <option value="Program Studi" {{ old('tingkat', $dokumen->tingkat) == 'Program Studi' ? 'selected' : '' }}>Program Studi</option>
+
                                  </select>
                                  @error('tingkat')
                                     <div class="invalid-feedback">

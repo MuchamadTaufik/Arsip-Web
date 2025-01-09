@@ -17,13 +17,13 @@ return new class extends Migration
             $table->string('nama_dokumen');
             $table->text('uraian_singkat');
             $table->date('tanggal_dokumen');
-            $table->string('jenis_dokumen');
+            $table->enum('jenis_dokumen', ['Surat Keputusan','Surat Tugas','Nota Dinas','Surat Undangan','Surat Keterangan']);
             $table->string('diunggah_oleh');
             $table->string('penerima');
-            $table->string('menu_referensi');
+            $table->enum('menu_referensi', ['Pembinaan Mahasiswa','Detasering', 'Bahan Ajar', 'Orasi Ilmiah', 'Pembimbing Dosen', 'Tugas Tambahan', 'Penelitian', 'Publikasi', 'Paten/HKI', 'Anggota Profesi', 'Penghargaan', 'Penunjang Lain', 'Pengabdian']);
             $table->string('file');
-            $table->enum('status', ['Status_1','Status_2','Status_3']);
-            $table->enum('tingkat', ['Penting','Tidak Penting']);
+            $table->enum('status', ['Baru','Lama']);
+            $table->enum('tingkat', ['Universitas','Fakultas','Program Studi']);
             $table->timestamps();
         });
     }

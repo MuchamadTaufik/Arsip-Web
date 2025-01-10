@@ -184,7 +184,21 @@
                                              <select class="form-control @error('status') is-invalid @enderror" id="status" name="status" required>
                                                 <option value="" disabled {{ old('status', $biodata->pegawai->status) == '' ? 'selected' : '' }}>Status</option>
                                                 <option value="Aktif" {{ old('status', $biodata->pegawai->status) == 'Aktif' ? 'selected' : '' }}>Aktif</option>
-                                                <option value="Non-Aktif" {{ old('status', $biodata->pegawai->status) == 'Non-Aktif' ? 'selected' : '' }}>Non-Aktif</option>
+                                                <option value="Tidak Aktif" {{ old('status', $biodata->pegawai->status) == 'Tidak Aktif' ? 'selected' : '' }}>Tidak Aktif</option>
+                                                <option value="Cuti Luar Tanggungan" {{ old('status', $biodata->pegawai->status) == 'Cuti Luar Tanggungan' ? 'selected' : '' }}>Cuti Luar Tanggungan</option>
+                                                <option value="Kontrak Habis" {{ old('status', $biodata->pegawai->status) == 'Kontrak Habis' ? 'selected' : '' }}>Kontrak Habis</option>
+                                                <option value="Meninggal Dunia" {{ old('status', $biodata->pegawai->status) == 'Meninggal Dunia' ? 'selected' : '' }}>Meninggal Dunia</option>
+                                                <option value="Mangkir 5 Kali Berturut-turut" {{ old('status', $biodata->pegawai->status) == 'Mangkir 5 Kali Berturut-turut' ? 'selected' : '' }}>Mangkir 5 Kali Berturut-turut</option>
+                                                <option value="Mengundurkan Diri" {{ old('status', $biodata->pegawai->status) == 'Mengundurkan Diri' ? 'selected' : '' }}>Mengundurkan Diri</option>
+                                                <option value="Pensiun Dini" {{ old('status'), $biodata->pegawai->status == 'Pensiun Dini' ? 'selected' : '' }}>Pensiun Dini</option>
+                                                <option value="PHK" {{ old('status', $biodata->pegawai->status) == 'PHK' ? 'selected' : '' }}>PHK</option>
+                                                <option value="Pelanggaran" {{ old('status', $biodata->pegawai->status) == 'Pelanggaran' ? 'selected' : '' }}>Pelanggaran</option>
+                                                <option value="Pensiun Normal" {{ old('status', $biodata->pegawai->status) == 'Pensiun Normal' ? 'selected' : '' }}>Pensiun Normal</option>
+                                                <option value="Pernikahakan Sesama Karyawan" {{ old('status', $biodata->pegawai->status) == 'Pernikahakan Sesama Karyawan' ? 'selected' : '' }}>Pernikahakan Sesama Karyawan</option>
+                                                <option value="Kesalahan Berat" {{ old('status', $biodata->pegawai->status) == 'Kesalahan Berat' ? 'selected' : '' }}>Kesalahan Berat</option>
+                                                <option value="Sakit Berkepanjangan" {{ old('status', $biodata->pegawai->status) == 'Sakit Berkepanjangan' ? 'selected' : '' }}>Sakit Berkepanjangan</option>
+                                                <option value="Tugas Belajar" {{ old('status', $biodata->pegawai->status) == 'Tugas Belajar' ? 'selected' : '' }}>Tugas Belajar</option>
+                                                <option value="Ditahan Pihak Berwajib" {{ old('status', $biodata->pegawai->status) == 'Ditahan Pihak Berwajib' ? 'selected' : '' }}>Ditahan Pihak Berwajib</option>
                                              </select>
                                              @error('status')
                                                 <div class="invalid-feedback">
@@ -194,8 +208,15 @@
                                        </div> 
 
                                        <div class="col-md-12">
-                                          <input type="text" class="form-control @error('hubungan_kerja') is-invalid @enderror" id="hubungan_kerja" name="hubungan_kerja" required value="{{ old('hubungan_kerja', $biodata->pegawai->hubungan_kerja) }}" placeholder="Hubungan Kerja">
-                                             @error('hubungan_kerja')
+                                          <select class="form-control @error('hubungan_kerja') is-invalid @enderror" id="hubungan_kerja" name="hubungan_kerja" required>
+                                             <option value="" disabled {{ old('hubungan_kerja', $biodata->hubungan_kerja) == '' ? 'selected' : '' }}>hubungan_kerja</option>
+                                             <option value="Tetap Yayasan" {{ old('hubungan_kerja', $biodata->hubungan_kerja) == 'Tetap Yayasan' ? 'selected' : '' }}>Tetap Yayasan</option>
+                                             <option value="Partime" {{ old('hubungan_kerja', $biodata->hubungan_kerja) == 'Partime' ? 'selected' : '' }}>Partime</option>
+                                             <option value="PNS/DPK" {{ old('hubungan_kerja', $biodata->hubungan_kerja) == 'PNS/DPK' ? 'selected' : '' }}>PNS/DPK</option>
+                                             <option value="Fulltime" {{ old('hubungan_kerja', $biodata->hubungan_kerja) == 'Fulltime' ? 'selected' : '' }}>Fulltime</option>
+                                             <option value="Kontrak" {{ old('hubungan_kerja', $biodata->hubungan_kerja) == 'Kontrak' ? 'selected' : '' }}>Kontrak</option>
+                                          </select>
+                                          @error('hubungan_kerja')
                                                 <div class="invalid-feedback">
                                                    {{ $message }}
                                                 </div>

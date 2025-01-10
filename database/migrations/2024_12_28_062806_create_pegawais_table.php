@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('unit_id')->nullable();
             $table->foreign('unit_id')->references('id')->on('units')->onDelete('cascade');
-            $table->enum('status', ['Aktif','Non-Aktif']);
-            $table->string('hubungan_kerja');
+            $table->enum('status', ['Aktif','Tidak Aktif','Cuti Luar Tanggungan','Kontrak Habis', 'Meninggal Dunia','Mangkir 5 Kali Berturut-turut','Mengundurkan Diri','Pensiun Dini','PHK','Pelanggaran','Pensiun Normal','Pernikahakan Sesama Karyawan','Kesalahan Berat','Sakit Berkepanjangan','Tugas Belajar','Ditahan Pihak Berwajib']);
+            $table->enum('hubungan_kerja',['Tetap Yayasan','Partime','PNS/DPK','Fulltime', 'Kontrak']);
             $table->string('jabatan');
             $table->timestamps();
         });

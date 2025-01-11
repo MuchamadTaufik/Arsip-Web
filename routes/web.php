@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\BiodataController;
 use App\Http\Controllers\Admin\DokumenController;
+use App\Http\Controllers\Admin\KelolaAkunController;
 use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Dashboard\DashboardAdminController;
@@ -53,6 +54,13 @@ Route::group(['middleware' => ['auth', 'role:admin']], function(){
    Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
    Route::get('/laporan/download', [LaporanController::class, 'export'])->name('reports.export');
    
+
+   Route::get('/kelola-akun', [KelolaAkunController::class, 'index'])->name('kelola.akun');
+   Route::get('/kelola-akun/create', [KelolaAkunController::class, 'create'])->name('kelola.akun.create');
+   Route::post('/kelola-akun/store', [KelolaAkunController::class, 'store'])->name('kelola.akun.store');
+   Route::get('/kelola-akun/edit/{akun}', [KelolaAkunController::class, 'edit'])->name('kelola.akun.edit');
+   Route::put('/kelola-akun/update/{akun}', [KelolaAkunController::class, 'update'])->name('kelola.akun.update');
+   Route::delete('/kelola-akun/delete/{akun}', [KelolaAkunController::class, 'destroy'])->name('kelola.akun.delete');
 });
 
 Route::group(['middleware' => ['auth', 'role:admin,pegawai']], function(){

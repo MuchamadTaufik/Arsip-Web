@@ -44,7 +44,7 @@
                   <div class="mb-3">
                      <label class="form-label">Hubungan Kerja</label>
                      <select name="hubungan_kerja" class="form-select">
-                        <option value="" disabled>hubungan_kerja</option>
+                        <option value="">Semua Hubungan Kerja</option>
                         <option value="Tetap Yayasan">Tetap Yayasan</option>
                         <option value="Partime">Partime</option>
                         <option value="PNS/DPK">PNS/DPK</option>

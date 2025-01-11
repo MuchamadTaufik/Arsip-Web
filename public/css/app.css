@@ -12105,7 +12105,7 @@ body {
 }
 .sidebar,
 .sidebar-content {
-    background: linear-gradient(120deg, rgba(209, 10, 10, 0.9), rgba(0, 0, 0, 0.9));
+    background: linear-gradient(120deg, rgba(0, 0, 0, 0.9),rgba(209, 10, 10, 0.9) );
     transition: margin-left 0.35s ease-in-out, left 0.35s ease-in-out,
         margin-right 0.35s ease-in-out, right 0.35s ease-in-out;
 }

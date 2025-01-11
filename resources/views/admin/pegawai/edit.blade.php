@@ -209,12 +209,12 @@
 
                                        <div class="col-md-12">
                                           <select class="form-control @error('hubungan_kerja') is-invalid @enderror" id="hubungan_kerja" name="hubungan_kerja" required>
-                                             <option value="" disabled {{ old('hubungan_kerja', $biodata->hubungan_kerja) == '' ? 'selected' : '' }}>hubungan_kerja</option>
-                                             <option value="Tetap Yayasan" {{ old('hubungan_kerja', $biodata->hubungan_kerja) == 'Tetap Yayasan' ? 'selected' : '' }}>Tetap Yayasan</option>
-                                             <option value="Partime" {{ old('hubungan_kerja', $biodata->hubungan_kerja) == 'Partime' ? 'selected' : '' }}>Partime</option>
-                                             <option value="PNS/DPK" {{ old('hubungan_kerja', $biodata->hubungan_kerja) == 'PNS/DPK' ? 'selected' : '' }}>PNS/DPK</option>
-                                             <option value="Fulltime" {{ old('hubungan_kerja', $biodata->hubungan_kerja) == 'Fulltime' ? 'selected' : '' }}>Fulltime</option>
-                                             <option value="Kontrak" {{ old('hubungan_kerja', $biodata->hubungan_kerja) == 'Kontrak' ? 'selected' : '' }}>Kontrak</option>
+                                             <option value="" disabled {{ old('hubungan_kerja') == '' ? 'selected' : '' }}>Hubungan Kerja</option>
+                                             <option value="Tetap Yayasan" {{ old('hubungan_kerja', $biodata->pegawai->hubungan_kerja) == 'Tetap Yayasan' ? 'selected' : '' }}>Tetap Yayasan</option>
+                                             <option value="Partime" {{ old('hubungan_kerja', $biodata->pegawai->hubungan_kerja) == 'Partime' ? 'selected' : '' }}>Partime</option>
+                                             <option value="PNS/DPK" {{ old('hubungan_kerja', $biodata->pegawai->hubungan_kerja) == 'PNS/DPK' ? 'selected' : '' }}>PNS/DPK</option>
+                                             <option value="Fulltime" {{ old('hubungan_kerja', $biodata->pegawai->hubungan_kerja) == 'Fulltime' ? 'selected' : '' }}>Fulltime</option>
+                                             <option value="Kontrak" {{ old('hubungan_kerja', $biodata->pegawai->hubungan_kerja) == 'Kontrak' ? 'selected' : '' }}>Kontrak</option>
                                           </select>
                                           @error('hubungan_kerja')
                                                 <div class="invalid-feedback">

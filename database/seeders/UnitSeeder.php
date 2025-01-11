@@ -16,6 +16,11 @@ class UnitSeeder extends Seeder
     {
         DB::table('units')->insert([
             [
+                'name' => 'Universitas Pasundan',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
                 'name' => 'Ilmu Hukum',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),

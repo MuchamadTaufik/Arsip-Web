@@ -122,8 +122,11 @@
                                 <label for="jenis_dokumen">Jenis Dokumen</label>
                                 <select class="form-control @error('jenis_dokumen') is-invalid @enderror" id="jenis_dokumen" name="jenis_dokumen" required>
                                     <option value="" disabled {{ old('jenis_dokumen') == '' ? 'selected' : '' }}>Pilih Jenis Dokumen</option>
-                                    <option value="Baru" {{ old('jenis_dokumen') == 'Baru' ? 'selected' : '' }}>Baru</option>
-                                    <option value="Lama" {{ old('jenis_dokumen') == 'Lama' ? 'selected' : '' }}>Lama</option>
+                                    <option value="Surat Keputusan" {{ old('jenis_dokumen') == 'Surat Keputusan' ? 'selected' : '' }}>Surat Keputusan</option>
+                                    <option value="Surat Tugas" {{ old('jenis_dokumen') == 'Surat Tugas' ? 'selected' : '' }}>Surat Tugas</option>
+                                    <option value="Nota Dinas" {{ old('jenis_dokumen') == 'Nota Dinas' ? 'selected' : '' }}>Nota Dinas</option>
+                                    <option value="Surat Undangan" {{ old('jenis_dokumen') == 'Surat Undangan' ? 'selected' : '' }}>Surat Undangan</option>
+                                    <option value="Surat Keterangan" {{ old('jenis_dokumen') == 'Surat Keterangan' ? 'selected' : '' }}>Surat Keterangan</option>
                                 </select>
                                 @error('jenis_dokumen')
                                     <div class="invalid-feedback">

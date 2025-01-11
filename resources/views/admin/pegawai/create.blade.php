@@ -210,7 +210,7 @@
 
                                        <div class="col-md-12">
                                           <select class="form-control @error('hubungan_kerja') is-invalid @enderror" id="hubungan_kerja" name="hubungan_kerja" required>
-                                             <option value="" disabled {{ old('hubungan_kerja') == '' ? 'selected' : '' }}>hubungan_kerja</option>
+                                             <option value="" disabled {{ old('hubungan_kerja') == '' ? 'selected' : '' }}>Hubungan Kerja</option>
                                              <option value="Tetap Yayasan" {{ old('hubungan_kerja') == 'Tetap Yayasan' ? 'selected' : '' }}>Tetap Yayasan</option>
                                              <option value="Partime" {{ old('hubungan_kerja') == 'Partime' ? 'selected' : '' }}>Partime</option>
                                              <option value="PNS/DPK" {{ old('hubungan_kerja') == 'PNS/DPK' ? 'selected' : '' }}>PNS/DPK</option>

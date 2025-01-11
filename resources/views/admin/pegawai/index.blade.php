@@ -68,8 +68,9 @@
                                 <td>{{ $loop->iteration }}.</td>
                                 <td>{{ $data->nip }}</td>
                                 <td>{{ $data->nama_pegawai }}</td>
-                                <td>{{ $data->pegawai->status ?? 'Belum diisi'}}</td>
+                                
                                 <td>{{ $data->pegawai->unit->name ?? 'Belum diisi'}}</td>
+                                <td>{{ $data->pegawai->status ?? 'Belum diisi'}}</td>
                                 <td>
                                     <div class="d-flex justify-content-center align-items-center gap-3">
                                         <a href="{{ route('pegawai.show', $data->slug) }}">
@@ -97,41 +98,41 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const unitSelect = document.getElementById('unit_kerja');
             const statusSelect = document.getElementById('status');
             const searchInput = document.getElementById('searchInput');
-    
+
             function filterTable() {
                 const unitValue = unitSelect.value.toLowerCase();
                 const statusValue = statusSelect.value.toLowerCase();
                 const searchValue = searchInput.value.toLowerCase();
-    
+
                 const table = document.querySelector('.table');
                 const rows = table.getElementsByTagName('tr');
-    
+
                 for (let i = 1; i < rows.length; i++) {
                     const row = rows[i];
                     const cells = row.getElementsByTagName('td');
-                    
+
                     if (cells.length) {
-                        const statusText = cells[3].textContent.toLowerCase(); // Status di kolom 4
-                        const unitText = cells[4].textContent.toLowerCase();   // Unit Kerja di kolom 5
+                        const unitText = cells[3]?.textContent.toLowerCase() || ''; // Unit Kerja di kolom ke-4
+                        const statusText = cells[4]?.textContent.toLowerCase() || ''; // Status di kolom ke-5
                         const searchableText = Array.from(cells).map(cell => cell.textContent.toLowerCase()).join(' ');
-    
-                        const matchesUnit = !unitValue || unitText.includes(unitValue);
-                        const matchesStatus = !statusValue || statusText.trim() === statusValue;
-                        const matchesSearch = !searchValue || searchableText.includes(searchValue);
-    
-                        row.style.display = (matchesUnit && matchesStatus && matchesSearch) ? '' : 'none';
+
+                        const matchesUnit = unitValue === '' || unitText.includes(unitValue);
+                        const matchesStatus = statusValue === '' || statusText.includes(statusValue);
+                        const matchesSearch = searchValue === '' || searchableText.includes(searchValue);
+
+                        row.style.display = matchesUnit && matchesStatus && matchesSearch ? '' : 'none';
                     }
                 }
             }
-    
-            // Event listeners
+
             unitSelect.addEventListener('change', filterTable);
             statusSelect.addEventListener('change', filterTable);
             searchInput.addEventListener('keyup', filterTable);
         });
+
     </script>
 @endsection

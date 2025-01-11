@@ -11895,7 +11895,7 @@ fieldset:disabled .btn {
     width: 36px;
 }
 footer.footer {
-    background: #fff;
+    background: #660303;
     direction: ltr;
     padding: 1rem 0.875rem;
 }
@@ -11978,8 +11978,13 @@ a.list-group-item {
     margin-left: auto;
 }
 .navbar-bg {
-    background: #fff;
+    background: linear-gradient(
+        120deg,
+        rgba(209, 10, 10, 0.9),
+        rgba(0, 0, 0, 0.9)
+    );
 }
+
 .navbar-brand {
     color: #f8f9fa;
     display: block;
@@ -12100,7 +12105,7 @@ body {
 }
 .sidebar,
 .sidebar-content {
-    background: #222e3c;
+    background: linear-gradient(120deg, rgba(209, 10, 10, 0.9), rgba(0, 0, 0, 0.9));
     transition: margin-left 0.35s ease-in-out, left 0.35s ease-in-out,
         margin-right 0.35s ease-in-out, right 0.35s ease-in-out;
 }

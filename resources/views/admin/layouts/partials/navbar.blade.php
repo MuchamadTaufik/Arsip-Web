@@ -10,11 +10,11 @@
 
         <!-- Tombol Kembali di kanan -->
         @can('isAdmin')
-            <a class="btn btn-outline-primary ms-auto" href="{{ route('home') }}" >Kembali<a>
+            <a class="btn btn-outline-light ms-auto" href="{{ route('home') }}" >Kembali<a>
         @endcan
 
         @can('isPegawai')
-            <a class="btn btn-outline-primary ms-auto" href="{{ route('arsip') }}" >Kembali<a>
+            <a class="btn btn-outline-light ms-auto" href="{{ route('arsip') }}" >Kembali<a>
 
         @endcan
     </div>
